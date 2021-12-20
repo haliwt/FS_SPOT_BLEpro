@@ -93,7 +93,7 @@ static void FAN_OFF(void);
                  inputKey_lamp_8 =  inputKey_lamp_8 ^ 0x01;
                 if( inputKey_lamp_8 ==1){
                     run_t.gLampWhite_8=1;
-                     run_t.gTurnOffLamp=0;
+                     run_t.gTurnOffLamp=1;
                      run_t.gRunOrder= white_8;
                      run_t.gID_flag = white_8;
                      inputKey_lamp_32=0;
@@ -102,7 +102,7 @@ static void FAN_OFF(void);
 	                
                 }
                 else{
-                    run_t.gTurnOffLamp=1;
+                    run_t.gTurnOffLamp=0;
                     run_t.gRunOrder= turnOffLamp;
                     run_t.gADJ_brightness=0;
                 }
@@ -233,6 +233,7 @@ static void FAN_OFF(void);
               __delay_ms(1); 
              run_t.gFAN_flag=1;//FAN_ON_FUN();
               run_t.gTim0_30s=0;//timer 30s flag;
+             run_t.gTimer_flag=0;
              break;
              
          case white_8:
@@ -242,12 +243,13 @@ static void FAN_OFF(void);
               ColorWhite_8_ON();
               run_t.gColorPwm=79; //50
               PWM3_LoadDutyValue(run_t.gColorPwm);
+              
               WhichOneColorLamp_ON(2);
               run_t.gADJ_brightness = 0x02; //color white 8
                __delay_ms(1); 
               run_t.gFAN_flag=1;//FAN_ON_FUN();
               run_t.gTim0_30s=0;//timer 30s flag;
-              run_t.gTimer_flag=0;
+             run_t.gTimer_flag=0;
              break;
              
          case laser :
