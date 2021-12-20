@@ -65,6 +65,7 @@ void TurnOff_ALL_Lamp(void)
 {
     ColorWhite_32_OFF();
     ColorWhite_8_OFF();
+    Laser_OFF();
 
 }
 /***************************************************************

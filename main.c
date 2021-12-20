@@ -44,6 +44,7 @@
 #include "mcc_generated_files/mcc.h"
 #include "hardware/key.h"
 #include "hardware/run.h"
+#include "hardware/bluetooth.h"
 /*
                          Main application
  */
@@ -56,7 +57,7 @@ void main(void)
     // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts
     // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global and Peripheral Interrupts
     // Use the following macros to:
-
+      BlueTooth_Init();
     // Enable the Global Interrupts
     INTERRUPT_GlobalInterruptEnable();
 

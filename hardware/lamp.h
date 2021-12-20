@@ -34,7 +34,7 @@ void TurnOff_ALL_Lamp(void);
 void WhichOneColorLamp_ON(uint8_t colorlamp);
 void WhichOneLed_ON(uint8_t onelamp);
 
-
+void TurnOff_ALL_Lamp(void);
 
 
 

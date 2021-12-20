@@ -14,6 +14,8 @@ typedef struct{
     uint8_t gFAN_flag;
     uint8_t gTim0_30s;
     uint8_t gTimer_flag;
+    uint8_t eusartTx_flag;
+    uint8_t eusartTx_Num;
     uint16_t gColorPwm;
  
 }RUNREF_T;
@@ -24,7 +26,7 @@ typedef enum Color{noLamp,white_32,white_8,laser,brightness_add,brightness_sub,p
  void CheckMode(uint8_t keyValue);
  void CheckRun(void);
  void FAN_Run(void);
-
+ 
 
 
 

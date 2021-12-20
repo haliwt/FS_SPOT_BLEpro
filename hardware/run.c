@@ -179,7 +179,8 @@ static void FAN_OFF(void);
            
          case noLamp:
              
-             ALL_LED_OFF();
+             ALL_LED_OFF(); //Turn OFF LED 
+             TurnOff_ALL_Lamp();  //Turn OFF Lamp 
              run_t.gPowerOn=0;
              run_t.gADJ_brightness=0;
              run_t.gTim0_30s=1;
