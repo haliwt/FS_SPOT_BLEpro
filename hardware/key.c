@@ -109,20 +109,14 @@ void PowrKEY_ISR(void)
 {
     static uint8_t k1;
     
-  
-   
-          k1 = k1^ 0x01;
+           k1 = k1^ 0x01;
           if(k1==1){
-             
-             run_t.gRunOrder= powerON; 
+               run_t.gRunOrder= powerON; 
           }
           else{ 
              run_t.gRunOrder= noLamp; 
           }
-    
-   
-
-}
+ }
 
 
 

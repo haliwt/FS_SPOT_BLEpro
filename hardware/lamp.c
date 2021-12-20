@@ -156,11 +156,11 @@ void WhichOneLed_ON(uint8_t onelamp)
         break;
         
         case 3:
-            LED4_RA3_SetHigh(); //ON
+             LED3_RA2_SetHigh() ;//Color white 8 LED
             
             LED1_RA0_SetLow(); 
             LED2_RA1_SetLow() ;
-            LED3_RA2_SetLow() ;
+            LED4_RA3_SetLow();
             
             LED5_RA4_SetLow() ;
             
