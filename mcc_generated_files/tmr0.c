@@ -65,8 +65,8 @@ void TMR0_Initialize(void)
 {
     // Set TMR0 to the options selected in the User Interface
 
-    // T0CS FOSC/4; T0CKPS 1:32; T0ASYNC synchronised; 
-    T0CON1 = 0x45;
+    // T0CS FOSC/4; T0CKPS 1:16; T0ASYNC synchronised; 
+    T0CON1 = 0x44;
 
     // TMR0H 249; 
     TMR0H = 0xF9;
@@ -83,8 +83,8 @@ void TMR0_Initialize(void)
     // Set Default Interrupt Handler
     TMR0_SetInterruptHandler(TMR0_DefaultInterruptHandler);
 
-    // T0OUTPS 1:1; T0EN enabled; T016BIT 8-bit; 
-    T0CON0 = 0x80;
+    // T0OUTPS 1:2; T0EN enabled; T016BIT 8-bit; 
+    T0CON0 = 0x81;
 }
 
 void TMR0_StartTimer(void)

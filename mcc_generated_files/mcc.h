@@ -58,6 +58,7 @@
 #include "pwm4.h"
 #include "tmr0.h"
 #include "pwm3.h"
+#include "ext_int.h"
 #include "eusart.h"
 #include "delay.h"
 

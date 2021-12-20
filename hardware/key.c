@@ -1,4 +1,5 @@
 #include "key.h"
+#include "run.h"
 KEY_T key_t;
 uint8_t   KEY_Scan(void)
 {
@@ -9,6 +10,7 @@ uint8_t   KEY_Scan(void)
     static uint16_t  k5=0 ;
 	static uint16_t  k6=0 ;
     uint8_t cnt;
+#if 0
    if(POWER_KEY_RB0_GetValue() ==0){
         if(k1<181)
         k1++;   
@@ -16,7 +18,7 @@ uint8_t   KEY_Scan(void)
     else {  
       k1=0;  
     }
-    
+#endif 
     if(KEY_LAMP_1_RB1_GetValue() ==0){
        if(k2<181)
         k2++; 
@@ -65,12 +67,13 @@ uint8_t   KEY_Scan(void)
     
 	
     /***************************/
-  
+#if 0
     if(k1==180){
        cnt= 0x1  ;  //power key
       // k1=0; //BUG
        return cnt ;
-    } 
+    }
+#endif 
     if(k2==180){
         cnt= 0x2  ; //key color white lamp 1  0x02
        // k2=0;
@@ -99,6 +102,26 @@ uint8_t   KEY_Scan(void)
 	
     return 0 ;
     
+}
+
+
+void PowrKEY_ISR(void)
+{
+    static uint8_t k1;
+    
+  
+   
+          k1 = k1^ 0x01;
+          if(k1==1){
+             
+             run_t.gRunOrder= powerON; 
+          }
+          else{ 
+             run_t.gRunOrder= noLamp; 
+          }
+    
+   
+
 }
 
 

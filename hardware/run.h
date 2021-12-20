@@ -9,7 +9,8 @@ typedef struct{
     uint8_t gPowerOn;
     uint8_t gLampWhite_32;
     uint8_t gLampWhite_8;
-    uint8_t gCloseLamp;
+    uint8_t gTurnOffLamp;
+    uint8_t gID_flag;
     uint8_t gADJ_brightness;
     uint8_t gFAN_flag;
     uint8_t gTim0_30s;
@@ -21,7 +22,7 @@ typedef struct{
 }RUNREF_T;
 RUNREF_T run_t;
 
-typedef enum Color{noLamp,white_32,white_8,laser,brightness_add,brightness_sub,powerON};
+typedef enum Color{noLamp,turnOffLamp,white_32,white_8,laser,brightness_add,brightness_sub,powerON};
 
  void CheckMode(uint8_t keyValue);
  void CheckRun(void);

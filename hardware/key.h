@@ -14,6 +14,6 @@ typedef struct {
 extern  KEY_T key_t;
 uint8_t KEY_Scan(void);
 
-
+void PowrKEY_ISR(void);
 
 #endif 

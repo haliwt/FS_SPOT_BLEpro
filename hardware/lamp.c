@@ -76,59 +76,19 @@ void TurnOff_ALL_Lamp(void)
  *Return Ref: NO
  *
 ***************************************************************/
-void LED1_Power_ON(void)
+void LED6_Power_ON(void)
 {
-    LED1_RA0_SetHigh();  
+    LED6_RA5_SetHigh() ; 
 }
-void LED1_Power_OFF(void)
-{
-    LED1_RA0_SetLow(); 
-}
-
-void LED_2_ON(void)
-{
-    LED2_RA1_SetHigh() ;
-}
-void LED_2_OFF(void)
-{
-    LED2_RA1_SetLow() ;
-}
-
-void LED_3_ON(void)
-{
-    LED3_RA2_SetHigh() ;
-}
-void LED_3_OFF(void)
-{
-    LED3_RA2_SetLow() ;
-}
-
-void LED_4_ON(void)
-{
-    LED4_RA3_SetHigh();
-}
-void LED_4_OFF(void)
-{
-    LED4_RA3_SetLow();
-}
-
-void LED_5_ON(void)
-{
-    LED5_RA4_SetHigh();
-}
-void LED_5_OFF(void)
-{
-    LED5_RA4_SetLow() ;
-}
-
-void LED_6_ON(void)
-{
-    LED6_RA5_SetHigh() ;
-}
-void LED_6_OFF(void)
+void LED6_Power_OFF(void)
 {
     LED6_RA5_SetLow() ;
 }
+
+
+
+
+
 
 /***************************************************************
  * *
@@ -159,6 +119,17 @@ void WhichOneLed_ON(uint8_t onelamp)
 {
     switch(onelamp){
         
+        
+        case 0:
+            LED1_RA0_SetLow(); //On
+            LED2_RA1_SetLow() ;
+            LED3_RA2_SetLow() ;
+            LED4_RA3_SetLow();
+            LED5_RA4_SetLow() ;
+           
+        
+        break;
+        
         case 1:
            
             LED1_RA0_SetHigh(); //On
@@ -167,7 +138,7 @@ void WhichOneLed_ON(uint8_t onelamp)
             LED3_RA2_SetLow() ;
             LED4_RA3_SetLow();
             LED5_RA4_SetLow() ;
-            LED6_RA5_SetLow() ;
+           
         
         break;
         
@@ -180,7 +151,7 @@ void WhichOneLed_ON(uint8_t onelamp)
             LED3_RA2_SetLow() ;
             LED4_RA3_SetLow();
             LED5_RA4_SetLow() ;
-            LED6_RA5_SetLow() ;
+          
         
         break;
         
@@ -192,7 +163,7 @@ void WhichOneLed_ON(uint8_t onelamp)
             LED3_RA2_SetLow() ;
             
             LED5_RA4_SetLow() ;
-            LED6_RA5_SetLow() ;
+            
         
         
         break;
@@ -205,7 +176,7 @@ void WhichOneLed_ON(uint8_t onelamp)
             LED3_RA2_SetLow() ;
            
             LED5_RA4_SetLow() ;
-            LED6_RA5_SetLow() ;
+           
         
         break;
         
@@ -217,21 +188,11 @@ void WhichOneLed_ON(uint8_t onelamp)
             LED3_RA2_SetLow() ;
             LED4_RA3_SetLow();
            
-            LED6_RA5_SetLow() ;
-        
-        break;
-        
-        case 6:
-            LED6_RA5_SetHigh() ; //On
-        
-             LED1_RA0_SetLow(); 
-            LED2_RA1_SetLow() ;
-            LED3_RA2_SetLow() ;
-            LED4_RA3_SetLow();
-            LED5_RA4_SetLow() ;
             
         
         break;
+        
+     
         
         default:
         
