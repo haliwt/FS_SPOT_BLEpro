@@ -396,10 +396,10 @@ static void setColorWhite_32(uint16_t val)	// green brightness
 void FAN_Run(void)
 {
     if(run_t.gFAN_flag==1){
-       void FAN_ON();
+       FAN_ON();
     }
     else {
-    FAN_OFF();
+       FAN_OFF();
     
     }
 
