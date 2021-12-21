@@ -13,8 +13,7 @@
 static uint16_t level_32;
 static uint16_t level_8;
 
-static void ADJ_LampBrightnessADD(void);
-static void ADJ_LampBrightnessSUB(void);
+
 static void setColorWhite_32(uint16_t val);	// green brightness'
 
 static void FAN_ON(void);
@@ -314,7 +313,7 @@ static void FAN_ON(void);
 	*Return Ref:NO
 	*
 **************************************************************/
-static void ADJ_LampBrightnessADD(void)
+void ADJ_LampBrightnessADD(void)
 {
 	
 	  switch( run_t.gADJ_brightness ){
@@ -350,7 +349,7 @@ static void ADJ_LampBrightnessADD(void)
 
 }
 
-static void ADJ_LampBrightnessSUB(void)
+void ADJ_LampBrightnessSUB(void)
 {
      switch(run_t.gADJ_brightness ){
 

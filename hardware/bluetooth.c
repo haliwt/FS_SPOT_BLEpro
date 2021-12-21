@@ -186,7 +186,7 @@ void Ble_RxData_EUSART(void)
 		else if(i==2){
             
 
-			if(bleBuf[2]=='B'){
+			if(bleBuf[2]=='B' || bleBuf[2]=='L' ){
                 ble_t.bleInputCmd[0]=bleBuf[2];
 	             TX1REG = bleBuf[2];//recdata[i]; // ???????? // ??
             }
@@ -230,10 +230,15 @@ void Bluetooth_RunCmd(void)
      bleTarget=ble_t.bleInputCmd[1]-0x30;
 	//bleIndex=bleInputCmd[2]-0x30;
 	//static uint8_t keyBR_Counts=0;
-	if(cmdType =='B')
+	if(ble_t.bleInputCmd[0] =='B' )
 	{
-	    flag =1;
-	
+		flag =1;
+	    
+    }
+	else if(ble_t.bleInputCmd[0]=='L'){
+		
+		flag =2;
+		
 	}
 	else flag =0;
 	 
@@ -248,6 +253,7 @@ void Bluetooth_RunCmd(void)
 						if(tcolor32==1){
 							ColorWhite_8_OFF();
 							ColorWhite_32_ON();
+							run_t.gADJ_brightness=1;
 							
 						}
 						 else{
@@ -263,6 +269,7 @@ void Bluetooth_RunCmd(void)
 						if(tcolor8==1){
 							ColorWhite_32_OFF();
 							ColorWhite_8_ON();
+							run_t.gADJ_brightness=2;
 							
 						}
 			            else{
@@ -291,6 +298,22 @@ void Bluetooth_RunCmd(void)
 		}
 
 	}
+	
+    if(flag ==2)
+	{
+	    if(bleTarget == 0){
+			
+			ADJ_LampBrightnessADD();
+			
+		}
+		if(bleTarget == 1){
+			
+			ADJ_LampBrightnessSUB();
+			
+		}
+	
+	}
+	
 		               
 			
 

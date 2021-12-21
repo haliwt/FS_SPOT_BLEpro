@@ -34,6 +34,7 @@ typedef enum Color{noLamp,turnOffLamp,white_32,white_8,laser,brightness_add,brig
  void FAN_Run(void);
  void FAN_OFF(void);
 
-
+void ADJ_LampBrightnessADD(void);
+void ADJ_LampBrightnessSUB(void);
 
 #endif 
