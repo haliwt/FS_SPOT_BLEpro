@@ -197,22 +197,28 @@ static void FAN_OFF(void);
                       
                      WhichOneLed_ON(0);//Power On 
                      run_t.gADJ_brightness = 0;
+                    
                  break;
                  
                  case white_8:
                      ColorWhite_8_OFF();   
                      WhichOneLed_ON(0);//Power On 
                      run_t.gADJ_brightness = 0;
+                   
                  break;
                  
                  case laser:
                       Laser_OFF();
                      WhichOneLed_ON(0);//Power On 
                      run_t.gADJ_brightness = 0;
+                    
                  
                  break;
                 
             }
+              run_t.gTim0_30s=1;
+              if(run_t.gTimer_flag==1)
+                run_t.gFAN_flag=0;//FAN_ON_FUN();
         break;
              
         case powerON:
@@ -288,16 +294,7 @@ static void FAN_OFF(void);
              
              break;
              
-       //  case 0xAA: //"+"
-         //    ADJ_LampBrightnessADD();
-         
-        // break;
-         
-         
-       //  case 0xAF: //'-'
-          //     ADJ_LampBrightnessSUB();
-       //   break;
-             
+   
              
          default:
              break;
