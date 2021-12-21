@@ -249,61 +249,33 @@ void Bluetooth_RunCmd(void)
 	 
 
 	if(flag==1){
-	    if(bleTarget==1){
-			            
-				
-					 
-						tcolor32=tcolor32^0x01;
-						
-						if(tcolor32==1){
-							ColorWhite_8_OFF();
-							ColorWhite_32_ON();
-							run_t.gADJ_brightness=1;
+		
+		switch(bleTarget){
+			
+	   
+		case 1:	            
+				ColorWhite_8_OFF();
+				ColorWhite_32_ON();
+				run_t.gADJ_brightness=1;
 							
-						}
-						 else{
-						     ColorWhite_32_OFF();
-						 }
-				
-					
-
-		}
-	    else if(bleTarget==2){
+		break;
+	case 2:
 			    
-		 	           tcolor8= tcolor8^ 0x01;
-						if(tcolor8==1){
-							ColorWhite_32_OFF();
-							ColorWhite_8_ON();
-							run_t.gADJ_brightness=2;
-							
-						}
-			            else{
-							ColorWhite_8_OFF();
-						}
-				 
-	    }
-		else if(bleTarget==3){
-			if(laser != tlaser){
-				  laser= tlaser;
-			            tlaser=tlaser^0x01;
-						if(tlaser==1){
-							run_t.gTurnOffLamp=1;
-							run_t.gRunOrder= laser;
-							run_t.gID_flag = laser;
-							tcolor32=0;
-						    tcolor8=0;
-							
-						}
-			             else{
-							 run_t.gTurnOffLamp=0;
-                    		 run_t.gRunOrder= turnOffLamp;
-						} 
-						 
-			}		
-		}
+		ColorWhite_32_OFF();
+		ColorWhite_8_ON();
+		run_t.gADJ_brightness=2;
+	break;
+	
+	case 3:
+		
+		Laser_ON();
+		
+	break;
+	default:
+	break;
 
 	}
-	
+	}
     if(flag ==2)
 	{
 	    if(bleTarget == 0){
@@ -323,6 +295,7 @@ void Bluetooth_RunCmd(void)
 		
 		ColorWhite_32_OFF();
 		ColorWhite_8_OFF();
+		Laser_OFF();
 	}
 	
 		               
