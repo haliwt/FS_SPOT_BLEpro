@@ -50,7 +50,7 @@
  */
 void main(void)
 {
-    uint8_t keyValue;
+    uint8_t keyValue,i;
     // Initialize the device
     SYSTEM_Initialize();
 
@@ -69,16 +69,38 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-
+     FAN_OFF();
     while (1)
     {
         // Add your application code
+      #if 0
+        if(run_t.bleOpenBaud==0){
+			for(i=0;i<15;i++){
+			EUSART_Write(BleSetOpenBaud[i]);
+					
+					if(BleSetOpenBaud[i]=='\0'){
+						run_t.bleOpenBaud=1;
+						DELAY_milliseconds(100);
+					}
+			}
+		}
+          run_t.bleOpenBaud=0;
+      #endif
+      if(run_t.bleLinked !=1){
+          BlueTooth_SetupAT_Function();
+      }
+      
+     
+          run_t.bleLinked = BlueTooth_CheckLink();
+       #if 1
           keyValue = KEY_Scan();
           CheckMode(keyValue);
+         
+      #endif
+          EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
+          Bluetooth_RunCmd();
           CheckRun();
           FAN_Run();
-         // EUSART_SetRxInterruptHandler(RxData_EUSART);
-         // EUSART_InputCmd_Run();
     }
 }
 /**

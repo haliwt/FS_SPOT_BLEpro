@@ -16,8 +16,8 @@ static uint16_t level_8;
 static void ADJ_LampBrightnessADD(void);
 static void ADJ_LampBrightnessSUB(void);
 static void setColorWhite_32(uint16_t val);	// green brightness'
+
 static void FAN_ON(void);
-static void FAN_OFF(void);
 /***************************************************************************
 	*
 	*Function Name:void CheckMode(uint8_t value)
@@ -393,7 +393,10 @@ static void setColorWhite_32(uint16_t val)	// green brightness
 void FAN_Run(void)
 {
     if(run_t.gFAN_flag==1){
-       FAN_ON();
+      DELAY_milliseconds(10);
+      FAN_ON();
+      DELAY_milliseconds(10);
+      FAN_OFF();
     }
     else {
        FAN_OFF();
@@ -406,7 +409,7 @@ static void FAN_ON(void)
 {
   FAN_RC3_SetLow();
 }
-static void FAN_OFF(void)
+void FAN_OFF(void)
 {
   FAN_RC3_SetHigh();
 }
