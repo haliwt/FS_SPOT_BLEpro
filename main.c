@@ -92,14 +92,14 @@ void main(void)
       
      
           run_t.bleLinked = BlueTooth_CheckLink();
-       #if 1
+       #if 0
           keyValue = KEY_Scan();
           CheckMode(keyValue);
-         
+          CheckRun();
       #endif
           EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
           Bluetooth_RunCmd();
-          CheckRun();
+         
           FAN_Run();
     }
 }
