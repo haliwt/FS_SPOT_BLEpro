@@ -257,6 +257,10 @@ void Bluetooth_RunCmd(void)
 				ColorWhite_8_OFF();
 				ColorWhite_32_ON();
 				run_t.gADJ_brightness=1;
+				 __delay_ms(1); 
+             run_t.gFAN_flag=1;//FAN_ON_FUN();
+              run_t.gTim0_30s=0;//timer 30s flag;
+             run_t.gTimer_flag=0;
 							
 		break;
 	case 2:
@@ -264,11 +268,18 @@ void Bluetooth_RunCmd(void)
 		ColorWhite_32_OFF();
 		ColorWhite_8_ON();
 		run_t.gADJ_brightness=2;
+		 __delay_ms(1); 
+        run_t.gFAN_flag=1;//FAN_ON_FUN();
+        run_t.gTim0_30s=0;//timer 30s flag;
+        run_t.gTimer_flag=0;
 	break;
 	
 	case 3:
-		
 		Laser_ON();
+		 __delay_ms(1); 
+        run_t.gFAN_flag=1;//FAN_ON_FUN();
+        run_t.gTim0_30s=0;//timer 30s flag;
+        run_t.gTimer_flag=0;
 		
 	break;
 	default:
@@ -296,6 +307,10 @@ void Bluetooth_RunCmd(void)
 		ColorWhite_32_OFF();
 		ColorWhite_8_OFF();
 		Laser_OFF();
+	    run_t.gADJ_brightness=0;
+             run_t.gTim0_30s=1;
+             if(run_t.gTimer_flag==1)
+              run_t.gFAN_flag=0;//FAN_ON_FUN();
 	}
 	
 		               
