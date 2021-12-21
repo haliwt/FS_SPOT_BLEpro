@@ -186,7 +186,7 @@ void Ble_RxData_EUSART(void)
 		else if(i==2){
             
 
-			if(bleBuf[2]=='B' || bleBuf[2]=='L' ){
+			if(bleBuf[2]=='B' || bleBuf[2]=='L' || bleBuf[2]=='F' ){
                 ble_t.bleInputCmd[0]=bleBuf[2];
 	             TX1REG = bleBuf[2];//recdata[i]; // ???????? // ??
             }
@@ -238,6 +238,11 @@ void Bluetooth_RunCmd(void)
 	else if(ble_t.bleInputCmd[0]=='L'){
 		
 		flag =2;
+		
+	}
+	else if(ble_t.bleInputCmd[0]=='F'){
+		
+		flag=3;
 		
 	}
 	else flag =0;
@@ -312,6 +317,12 @@ void Bluetooth_RunCmd(void)
 			
 		}
 	
+	}
+	
+	if(flag==3){
+		
+		ColorWhite_32_OFF();
+		ColorWhite_8_OFF();
 	}
 	
 		               
