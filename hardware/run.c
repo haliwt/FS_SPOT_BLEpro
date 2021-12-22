@@ -189,14 +189,29 @@ static void FAN_ON(void);
              
         case turnOffLamp:
                 
-            WhichOneLed_ON(0);//Power On 
-            LED6_Power_ON();
-            TurnOff_ALL_Lamp();  //Turn OFF Lamp 
-             run_t.gPowerOn=0;
-             run_t.gADJ_brightness=0;
-             run_t.gTim0_30s=1;
-             if(run_t.gTimer_flag==1)
-                 run_t.gFAN_flag=0;//FAN_ON_FUN();
+             switch(run_t.gID_flag)
+             {
+                 case white_32:
+                     ColorWhite_32_OFF();  
+                      
+                     WhichOneLed_ON(0);//Power On 
+                     run_t.gADJ_brightness = 0;
+                 break;
+                 
+                 case white_8:
+                     ColorWhite_8_OFF();   
+                     WhichOneLed_ON(0);//Power On 
+                     run_t.gADJ_brightness = 0;
+                 break;
+                 
+                 case laser:
+                      Laser_OFF();
+                     WhichOneLed_ON(0);//Power On 
+                     run_t.gADJ_brightness = 0;
+                 
+                 break;
+                
+            }
         break;
              
         case powerON:
@@ -371,10 +386,7 @@ static void setColorWhite_32(uint16_t val)	// green brightness
 void FAN_Run(void)
 {
     if(run_t.gFAN_flag==1){
-      DELAY_milliseconds(10);
-      FAN_ON();
-      DELAY_milliseconds(10);
-      FAN_OFF();
+       FAN_ON();
     }
     else {
        FAN_OFF();

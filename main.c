@@ -50,7 +50,8 @@
  */
 void main(void)
 {
-    uint8_t keyValue,i;
+    
+     uint8_t  KeyValue;
     // Initialize the device
     SYSTEM_Initialize();
 
@@ -76,11 +77,10 @@ void main(void)
       
       
        
-          keyValue = KEY_Scan();
-          if(keyValue !=0){
-              CheckMode(keyValue);
-          }
-          else{
+          KeyValue = KEY_Scan();
+          CheckMode(KeyValue);
+          
+        /*   else{
             if(run_t.bleLinked!=1){
                   // BLE_MODE_RC2_SetLow();
                   BlueTooth_SetupAT_Function();
@@ -88,7 +88,7 @@ void main(void)
             run_t.bleLinked = BlueTooth_CheckLink();
             EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
             Bluetooth_RunCmd();
-          }
+          } */
           CheckRun();
           FAN_Run();
 }

@@ -5,6 +5,7 @@
 typedef struct{
 
     
+    volatile uint8_t gKeyValue;
     uint8_t gRunOrder;
     uint8_t gPowerOn;
     uint8_t gLampWhite_32;
@@ -21,6 +22,7 @@ typedef struct{
     uint8_t bleSetBaud;
     uint8_t bleSetName;
     uint8_t bleLinked;
+
     
     uint16_t gColorPwm;
  
