@@ -79,7 +79,6 @@ void main(void)
           keyValue = KEY_Scan();
           if(keyValue !=0){
               CheckMode(keyValue);
-          //CheckRun();
           }
           else{
             if(run_t.bleLinked!=1){

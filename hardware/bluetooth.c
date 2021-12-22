@@ -249,45 +249,31 @@ void Bluetooth_RunCmd(void)
 			
 	   
 		case 1:	            
-				ColorWhite_8_OFF();
-				ColorWhite_32_ON();
+	
 				 run_t.gLampWhite_32=1;
                     run_t.gTurnOffLamp=1;
                     run_t.gRunOrder= white_32;
                     run_t.gID_flag = white_32;
-				
-				run_t.gADJ_brightness=1;
-				 __delay_ms(1); 
-             run_t.gFAN_flag=1;//FAN_ON_FUN();
-              run_t.gTim0_30s=0;//timer 30s flag;
-             run_t.gTimer_flag=0;
+		
 							
 		break;
 	case 2:
 			    
-		ColorWhite_32_OFF();
-		ColorWhite_8_ON();
+	
 		 run_t.gLampWhite_8=1;
                      run_t.gTurnOffLamp=1;
                      run_t.gRunOrder= white_8;
                      run_t.gID_flag = white_8;
-		run_t.gADJ_brightness=2;
-		 __delay_ms(1); 
-        run_t.gFAN_flag=1;//FAN_ON_FUN();
-        run_t.gTim0_30s=0;//timer 30s flag;
-        run_t.gTimer_flag=0;
+		
+		  
+       
 	break;
 	
 	case 3:
-		Laser_ON();
-		 run_t.gTurnOffLamp=1;
-                     run_t.gRunOrder= laser;
-                     run_t.gID_flag = laser;
-		 __delay_ms(1); 
-        run_t.gFAN_flag=1;//FAN_ON_FUN();
-        run_t.gTim0_30s=0;//timer 30s flag;
-        run_t.gTimer_flag=0;
-		
+		   Laser_ON();
+		     run_t.gTurnOffLamp=1;
+            run_t.gRunOrder= laser;
+             run_t.gID_flag = laser;
 	break;
 	default:
 	break;
