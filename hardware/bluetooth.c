@@ -228,19 +228,22 @@ void Bluetooth_RunCmd(void)
 	if(ble_t.bleInputCmd[0] =='B' )
 	{
 		flag =1;
-	    
+	    run_t.gBle_Mode=1;
     }
 	else if(ble_t.bleInputCmd[0]=='L'){
 		
 		flag =2;
-		
+		run_t.gBle_Mode=1;
 	}
 	else if(ble_t.bleInputCmd[0]=='F'){
 		
 		flag=3;
-		
+		run_t.gBle_Mode=1;
 	}
-	else flag =0;
+	else{
+		flag =0;
+		run_t.gBle_Mode=0;
+	}
 	 
 
 	if(flag==1){ //LED AND LASER
@@ -271,7 +274,7 @@ void Bluetooth_RunCmd(void)
 	
 	case 3:
 		   Laser_ON();
-		     run_t.gTurnOffLamp=1;
+		    run_t.gTurnOffLamp=1;
             run_t.gRunOrder= laser;
              run_t.gID_flag = laser;
 	break;
@@ -299,14 +302,7 @@ void Bluetooth_RunCmd(void)
 	
 	if(flag==3){
 		
-		/* ColorWhite_32_OFF();
-		ColorWhite_8_OFF();
-		Laser_OFF();
-	    run_t.gADJ_brightness=0;
-             run_t.gTim0_30s=1;
-             if(run_t.gTimer_flag==1)
-              run_t.gFAN_flag=0;//FAN_ON_FUN(); */
-			  run_t.gTurnOffLamp=0;
+			 run_t.gTurnOffLamp=0;
                     run_t.gRunOrder= turnOffLamp;
                     run_t.gADJ_brightness=0;
 	}

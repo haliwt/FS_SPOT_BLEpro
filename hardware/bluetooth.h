@@ -5,6 +5,7 @@
 
 typedef struct{
     
+    
     uint8_t bleInputCmd[8];
     
 }BLE_T;

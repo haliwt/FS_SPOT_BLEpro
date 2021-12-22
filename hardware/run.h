@@ -5,7 +5,7 @@
 typedef struct{
 
     
-    volatile uint8_t gKeyValue;
+    uint8_t gBle_Mode;
     uint8_t gRunOrder;
     uint8_t gPowerOn;
     uint8_t gLampWhite_32;
