@@ -26,7 +26,7 @@ void ColorWhite_8_OFF(void)
 void Laser_ON(void)
 {
   TMR4_Start(); //WT.2021.12.22
-  PWM4_LoadDutyValue(79);
+  PWM4_LoadDutyValue(127);
  // DELAY_milliseconds(1);
  // LASER_RC0_SetLow() ;
  // DELAY_milliseconds(1);

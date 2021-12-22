@@ -212,6 +212,9 @@ static void FAN_ON(void);
                  break;
                 
             }
+            run_t.gTim0_30s=1;
+            if(run_t.gTimer_flag==1)
+                 run_t.gFAN_flag=0;//FAN_ON_FUN();
         break;
              
         case powerON:
