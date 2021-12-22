@@ -36,7 +36,7 @@ static void FAN_ON(void);
 	     if(!keyValue)
 		  	return ;
 		break;
-#if 0
+#if 1
 	   case 0x1: //power On
 	  
 	       

@@ -229,7 +229,7 @@
 #define RB0_SetHigh()            do { LATBbits.LATB0 = 1; } while(0)
 #define RB0_SetLow()             do { LATBbits.LATB0 = 0; } while(0)
 #define RB0_Toggle()             do { LATBbits.LATB0 = ~LATBbits.LATB0; } while(0)
-#define RB0_GetValue()              PORTBbits.RB0
+#define POWER_KEY_RB0_GetValue()              PORTBbits.RB0
 #define RB0_SetDigitalInput()    do { TRISBbits.TRISB0 = 1; } while(0)
 #define RB0_SetDigitalOutput()   do { TRISBbits.TRISB0 = 0; } while(0)
 #define RB0_SetPullup()             do { WPUBbits.WPUB0 = 1; } while(0)

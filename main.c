@@ -78,10 +78,11 @@ void main(void)
       
        
           KeyValue = KEY_Scan();
+         EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
           if(KeyValue !=0){
             CheckMode(KeyValue);
           }
-        else{
+          else if(run_t.gBle_Mode==1){
             if(run_t.bleLinked!=1){
                   // BLE_MODE_RC2_SetLow();
                   BlueTooth_SetupAT_Function();
@@ -89,8 +90,9 @@ void main(void)
             run_t.bleLinked = BlueTooth_CheckLink();
             EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
             Bluetooth_RunCmd();
-            CheckMode(KeyValue);
+            run_t.gBle_Mode=0;
           } 
+        
           CheckRun();
           FAN_Run();
 }

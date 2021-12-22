@@ -194,13 +194,16 @@ void Ble_RxData_EUSART(void)
             }
 			else{
 			   ble_t.bleInputCmd[1]=bleBuf[3]; 
-
+              
 			   TX1REG = bleBuf[3];//recdata[i]; // ???????? // ??
 			}
 
 		 }
         i++;
-		if(i==4)i=0;
+		if(i==4){
+            i=0;
+            run_t.gBle_Mode=1;
+        }
         
      PIE3bits.RC1IE = 1; 
      PIE3bits.TX1IE = 1;

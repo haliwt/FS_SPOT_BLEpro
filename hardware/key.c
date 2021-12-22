@@ -10,7 +10,7 @@ uint8_t   KEY_Scan(void)
     static uint16_t  k5=0 ;
 	static uint16_t  k6=0 ;
     uint8_t cnt;
-#if 0
+#if 1
    if(POWER_KEY_RB0_GetValue() ==0){
         if(k1<181)
         k1++;   
@@ -67,7 +67,7 @@ uint8_t   KEY_Scan(void)
     
 	
     /***************************/
-#if 0
+#if 1
     if(k1==180){
        cnt= 0x1  ;  //power key
       // k1=0; //BUG
