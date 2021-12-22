@@ -6,6 +6,7 @@ typedef struct{
 
     
     uint8_t gBle_Mode;
+    uint8_t gBleItem;
     uint8_t gRunOrder;
     uint8_t gPowerOn;
     uint8_t gLampWhite_32;

@@ -231,21 +231,21 @@ void Bluetooth_RunCmd(void)
 	if(ble_t.bleInputCmd[0] =='B' )
 	{
 		flag =1;
-	    run_t.gBle_Mode=1;
+	    run_t.gBleItem=1;
     }
 	else if(ble_t.bleInputCmd[0]=='L'){
 		
 		flag =2;
-		run_t.gBle_Mode=1;
+		 run_t.gBleItem=1;
 	}
 	else if(ble_t.bleInputCmd[0]=='F'){
 		
 		flag=3;
-		run_t.gBle_Mode=1;
+		 run_t.gBleItem=1;
 	}
 	else{
 		flag =0;
-		run_t.gBle_Mode=0;
+		run_t.gBleItem=0;
 	}
 	 
 

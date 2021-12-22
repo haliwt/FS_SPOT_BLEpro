@@ -92,8 +92,7 @@ void main(void)
             Bluetooth_RunCmd();
             run_t.gBle_Mode=0;
           } 
-        
-          CheckRun();
+         CheckRun();
           FAN_Run();
 }
 }

@@ -41,6 +41,8 @@ static void FAN_ON(void);
 	  
 	       
            inputKey_power = inputKey_power ^ 0x01;
+            run_t.gBleItem=0;
+            run_t.gBle_Mode=0;
 	        if(inputKey_power ==1){
 	            run_t.gPowerOn =1;
 	            run_t.gRunOrder= powerON;
@@ -62,7 +64,7 @@ static void FAN_ON(void);
 #endif 
 	   case 0x02: //white 32
            if(run_t.gPowerOn==1){
-               run_t.gBle_Mode=0;
+                run_t.gBleItem=0;
                 inputKey_lamp_32 = inputKey_lamp_32 ^ 0x01;
                 if(inputKey_lamp_32 ==1){
                     run_t.gLampWhite_32=1;
@@ -90,7 +92,7 @@ static void FAN_ON(void);
 	   case 0x04://white 8
            
 	          if(run_t.gPowerOn==1){
-                run_t.gBle_Mode=0;
+                 run_t.gBleItem=0;
                  inputKey_lamp_8 =  inputKey_lamp_8 ^ 0x01;
                 if( inputKey_lamp_8 ==1){
                     run_t.gLampWhite_8=1;
@@ -115,7 +117,7 @@ static void FAN_ON(void);
    
 	   case 0x08://laser 
 		    if(run_t.gPowerOn==1){
-                run_t.gBle_Mode=0;
+                 run_t.gBleItem=0;
                 inputKey_laser = inputKey_laser ^ 0x01;
                 if(inputKey_laser ==1){
                      run_t.gTurnOffLamp=1;
@@ -139,7 +141,7 @@ static void FAN_ON(void);
 	   case 0x10: //sub  "-"
          if(run_t.gPowerOn==1){
             if(run_t.gTurnOffLamp==1){
-                run_t.gBle_Mode=0;
+                 run_t.gBleItem=0;
                 run_t.gRunOrder= brightness_sub;//run_t.gRunOrder= brightness_add;
            
             }
@@ -150,7 +152,7 @@ static void FAN_ON(void);
 	    
         if(run_t.gPowerOn==1){
              if(run_t.gTurnOffLamp==1) {
-               run_t.gBle_Mode=0;
+               run_t.gBleItem=0;
                run_t.gRunOrder= brightness_add;
               
              }
@@ -186,13 +188,14 @@ static void FAN_ON(void);
              run_t.gPowerOn=0;
              run_t.gADJ_brightness=0;
              run_t.gTim0_30s=1;
+             run_t.gBleItem=0;
              if(run_t.gTimer_flag==1)
                  run_t.gFAN_flag=0;//FAN_ON_FUN();
              
              break;
              
         case turnOffLamp:
-            if(run_t.gBle_Mode==1) {
+            if(run_t.gBleItem==1) {
                 ALL_LED_OFF(); //Turn OFF LED 
             }
             else { 
@@ -208,12 +211,13 @@ static void FAN_ON(void);
         case powerON:
            run_t.gPowerOn=1;
            run_t.gBle_Mode=0;
+           run_t.gBleItem=0;
            WhichOneLed_ON(0);//Power On 
            LED6_Power_ON();
         break;
         
          case white_32:
-             if(run_t.gBle_Mode==1){
+             if(run_t.gBleItem==1){
                 ALL_LED_OFF(); //Turn OFF LED 
                  
              }
@@ -234,7 +238,7 @@ static void FAN_ON(void);
              break;
              
          case white_8:
-              if(run_t.gBle_Mode==1){
+              if(run_t.gBleItem==1){
                 ALL_LED_OFF(); //Turn OFF LED 
                  
              }
@@ -255,7 +259,7 @@ static void FAN_ON(void);
              break;
              
          case laser :
-            if(run_t.gBle_Mode==1){
+            if(run_t.gBleItem==1){
                 ALL_LED_OFF(); //Turn OFF LED 
                  
              }
@@ -272,7 +276,7 @@ static void FAN_ON(void);
              break;
              
          case brightness_add:
-              if(run_t.gBle_Mode==1){
+              if(run_t.gBleItem==1){
                 ALL_LED_OFF(); //Turn OFF LED 
                  
              }
@@ -290,7 +294,7 @@ static void FAN_ON(void);
              break;
              
          case brightness_sub:
-             if(run_t.gBle_Mode==1){
+             if(run_t.gBleItem==1){
                 ALL_LED_OFF(); //Turn OFF LED 
                  
              }
