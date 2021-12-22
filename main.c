@@ -86,12 +86,14 @@ void main(void)
 		}
           run_t.bleOpenBaud=0;
       #endif
-      if(run_t.bleLinked !=1){
-          BlueTooth_SetupAT_Function();
-      }
+     // if(run_t.bleLinked ==1){
+          
+       //   BlueTooth_SetupAT_Function();
+     // }
       
-     
-          run_t.bleLinked = BlueTooth_CheckLink();
+       BLE_MODE_RC2_SetLow();
+       BlueTooth_SetupAT_Function();
+      run_t.bleLinked = BlueTooth_CheckLink();
        #if 0
           keyValue = KEY_Scan();
           CheckMode(keyValue);

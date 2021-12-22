@@ -23,12 +23,7 @@ void BlueTooth_SetupAT_Function(void)
      static uint8_t i,j,n;
 	 static uint8_t seq=1;
 	 
-	if(run_t.bleLinked==0)
-	{
-	  BLE_MODE_RC2_SetHigh();
-	}
-	else
-	   BLE_MODE_RC2_SetLow();
+	 BLE_MODE_RC2_SetLow();
 	   
 	   
 	if(run_t.bleSetName==0){
@@ -38,7 +33,7 @@ void BlueTooth_SetupAT_Function(void)
 					if(BleAssignedName[n]=='\0'){
 						n=50;
 						run_t.bleSetName=1;
-						DELAY_milliseconds(100);
+						//DELAY_milliseconds(100);
 					}
 			}
 	}
