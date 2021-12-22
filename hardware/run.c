@@ -237,11 +237,11 @@ static void FAN_ON(void);
                 
             }
             
-            if(run_t.gKeyItem ==2){
-                 WhichOneLed_ON(2);
+            if(run_t.gBleItem==1){
+               WhichOneLed_ON(0);//Power On 
             }
             else{
-               WhichOneLed_ON(0);//Power On 
+                WhichOneLed_ON(2);
             }
            
              ColorWhite_32_ON();
@@ -264,11 +264,12 @@ static void FAN_ON(void);
                   LED6_Power_OFF();
               }
               
-              if(run_t.gKeyItem ==4){
-                 WhichOneLed_ON(3); 
+              if(run_t.gBleItem ==1){
+                 WhichOneLed_ON(0);//Power On 
+                 
               }
               else {
-                  WhichOneLed_ON(0);//Power On 
+                 WhichOneLed_ON(3); 
               }
             
               ColorWhite_8_ON();
@@ -290,14 +291,13 @@ static void FAN_ON(void);
               else{
                   LED6_Power_OFF();
               }
-              
-              if(run_t.gKeyItem==8){
-                  WhichOneLed_ON(1);
+              if(run_t.gBleItem==1){
+                  WhichOneLed_ON(0);//Power On 
               }
               else{
-                   WhichOneLed_ON(0);//Power On 
+                  WhichOneLed_ON(1);
               }
-           
+             
             Laser_ON();
               __delay_ms(1); 
              run_t.gFAN_flag=1;//FAN_ON_FUN();
@@ -314,12 +314,11 @@ static void FAN_ON(void);
                   LED6_Power_OFF();
               }
           
-             if(run_t.gKeyItem==0X20){
-                 WhichOneLed_ON(4);
+             if(run_t.gBleItem==1){
+                 WhichOneLed_ON(0);//Power On 
              }
              else{
-             
-                WhichOneLed_ON(0);//Power On 
+                  WhichOneLed_ON(4);
              }
              run_t.gFAN_flag=0;//FAN_OFF_FUN();
              
@@ -338,12 +337,11 @@ static void FAN_ON(void);
                   LED6_Power_OFF();
               }
               
-             if(run_t.gKeyItem==0x10){
-                WhichOneLed_ON(5);
-                 
-             }
+             if(run_t.gBleItem==1){
+                 WhichOneLed_ON(0);//Power On 
+              }
              else{
-               WhichOneLed_ON(0);//Power On 
+                 WhichOneLed_ON(5);
                
              }
               run_t.gFAN_flag=0;//FAN_OFF_FUN();
