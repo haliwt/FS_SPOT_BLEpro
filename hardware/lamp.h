@@ -2,6 +2,9 @@
 #define __LAMP_H_
 #include "key.h"
 
+#define LASER_RC0_SetHigh()            do { LATCbits.LATC0 = 1; } while(0)
+#define LASER_RC0_SetLow()             do { LATCbits.LATC0 = 0; } while(0)
+
 void ColorWhite_32_ON(void);
 void ColorWhite_32_OFF(void);
 void ColorWhite_8_ON(void);

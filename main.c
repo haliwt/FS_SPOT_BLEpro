@@ -94,7 +94,7 @@ void main(void)
        BLE_MODE_RC2_SetLow();
        BlueTooth_SetupAT_Function();
       run_t.bleLinked = BlueTooth_CheckLink();
-       #if 0
+       #if 1
           keyValue = KEY_Scan();
           CheckMode(keyValue);
           CheckRun();

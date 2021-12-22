@@ -243,7 +243,7 @@ void Bluetooth_RunCmd(void)
 	else flag =0;
 	 
 
-	if(flag==1){
+	if(flag==1){ //LED AND LASER
 		
 		switch(bleTarget){
 			

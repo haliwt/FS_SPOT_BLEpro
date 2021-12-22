@@ -50,6 +50,7 @@
 
  #include <xc.h>
  #include "pwm4.h"
+#include "tmr4.h"
 
  /**
    Section: PWM Module APIs
@@ -63,13 +64,19 @@
     PWM4CON = 0x80;   
 
     // DC 19; 
-    PWM4DCH = 0x13;   
+    //PWM4DCH = 0x13;
+    // DC 39
+    PWM4DCH = 0x27;  //Duty 100%
 
     // DC 3; 
-    PWM4DCL = 0xC0;   
-
+    //PWM4DCL = 0xC0;   
+    //DC 3:
+    PWM4DCL =0xC0;
+  
     // Select timer
-    CCPTMRSbits.P4TSEL = 2; //
+    CCPTMRSbits.P4TSEL = 2; //Timer 4
+    
+    //TMR4_Stop(); //WT.2021.12.22
  }
 
  void PWM4_LoadDutyValue(uint16_t dutyValue)
