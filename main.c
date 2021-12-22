@@ -72,39 +72,29 @@ void main(void)
      FAN_OFF();
     while (1)
     {
-        // Add your application code
-      #if 0
-        if(run_t.bleOpenBaud==0){
-			for(i=0;i<15;i++){
-			EUSART_Write(BleSetOpenBaud[i]);
-					
-					if(BleSetOpenBaud[i]=='\0'){
-						run_t.bleOpenBaud=1;
-						DELAY_milliseconds(100);
-					}
-			}
-		}
-          run_t.bleOpenBaud=0;
-      #endif
-     // if(run_t.bleLinked ==1){
-          
-       //   BlueTooth_SetupAT_Function();
-     // }
+       
       
-       BLE_MODE_RC2_SetLow();
-       BlueTooth_SetupAT_Function();
-      run_t.bleLinked = BlueTooth_CheckLink();
-       #if 1
+      
+       
           keyValue = KEY_Scan();
-          CheckMode(keyValue);
+          if(keyValue !=0){
+              CheckMode(keyValue);
+          //CheckRun();
+          }
+          else{
+            if(run_t.bleLinked!=1){
+                  // BLE_MODE_RC2_SetLow();
+                  BlueTooth_SetupAT_Function();
+            }
+            run_t.bleLinked = BlueTooth_CheckLink();
+            EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
+            Bluetooth_RunCmd();
+          }
           CheckRun();
-      #endif
-          EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
-          Bluetooth_RunCmd();
-         
           FAN_Run();
-    }
 }
+}
+
 /**
  End of File
 */

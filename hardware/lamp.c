@@ -27,9 +27,9 @@ void Laser_ON(void)
 {
  // TMR4_Start(); //WT.2021.12.22
   //PWM4_LoadDutyValue(31);
-  DELAY_milliseconds(20);
+  DELAY_milliseconds(1);
   LASER_RC0_SetLow() ;
-  DELAY_milliseconds(20);
+  DELAY_milliseconds(1);
   LASER_RC0_SetHigh() ;
 }
 void Laser_OFF(void)

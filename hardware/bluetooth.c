@@ -251,6 +251,11 @@ void Bluetooth_RunCmd(void)
 		case 1:	            
 				ColorWhite_8_OFF();
 				ColorWhite_32_ON();
+				 run_t.gLampWhite_32=1;
+                    run_t.gTurnOffLamp=1;
+                    run_t.gRunOrder= white_32;
+                    run_t.gID_flag = white_32;
+				
 				run_t.gADJ_brightness=1;
 				 __delay_ms(1); 
              run_t.gFAN_flag=1;//FAN_ON_FUN();
@@ -262,6 +267,10 @@ void Bluetooth_RunCmd(void)
 			    
 		ColorWhite_32_OFF();
 		ColorWhite_8_ON();
+		 run_t.gLampWhite_8=1;
+                     run_t.gTurnOffLamp=1;
+                     run_t.gRunOrder= white_8;
+                     run_t.gID_flag = white_8;
 		run_t.gADJ_brightness=2;
 		 __delay_ms(1); 
         run_t.gFAN_flag=1;//FAN_ON_FUN();
@@ -271,6 +280,9 @@ void Bluetooth_RunCmd(void)
 	
 	case 3:
 		Laser_ON();
+		 run_t.gTurnOffLamp=1;
+                     run_t.gRunOrder= laser;
+                     run_t.gID_flag = laser;
 		 __delay_ms(1); 
         run_t.gFAN_flag=1;//FAN_ON_FUN();
         run_t.gTim0_30s=0;//timer 30s flag;
@@ -286,12 +298,14 @@ void Bluetooth_RunCmd(void)
 	{
 	    if(bleTarget == 0){
 			
-			ADJ_LampBrightnessADD();
+			//ADJ_LampBrightnessADD();
+			 run_t.gRunOrder= brightness_add;
 			
 		}
 		if(bleTarget == 1){
 			
-			ADJ_LampBrightnessSUB();
+			//ADJ_LampBrightnessSUB();
+			run_t.gRunOrder= brightness_sub;
 			
 		}
 	
@@ -299,13 +313,16 @@ void Bluetooth_RunCmd(void)
 	
 	if(flag==3){
 		
-		ColorWhite_32_OFF();
+		/* ColorWhite_32_OFF();
 		ColorWhite_8_OFF();
 		Laser_OFF();
 	    run_t.gADJ_brightness=0;
              run_t.gTim0_30s=1;
              if(run_t.gTimer_flag==1)
-              run_t.gFAN_flag=0;//FAN_ON_FUN();
+              run_t.gFAN_flag=0;//FAN_ON_FUN(); */
+			  run_t.gTurnOffLamp=0;
+                    run_t.gRunOrder= turnOffLamp;
+                    run_t.gADJ_brightness=0;
 	}
 	
 		               
