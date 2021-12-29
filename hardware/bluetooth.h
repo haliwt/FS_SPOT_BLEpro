@@ -2,7 +2,8 @@
 #define __BLUETOOTH_H_
 #include "key.h"
 
-
+const uint8_t BleAssignedName[]={"AT+SPPNAME=ForenScope CSI"};
+const uint8_t BleAssignedBaud[]={"AT+BAUD=1"}; //setup baud rate is 9600
 typedef struct{
     
     
@@ -21,6 +22,8 @@ void Ble_RxData_EUSART(void);
 void Bluetooth_RunCmd(void);
 
 void Bluetooth_RunCmd(void);
+
+void EUSART_BleCommandTxData(uint8_t index);
 
 
 

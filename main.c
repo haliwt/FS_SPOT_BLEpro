@@ -45,12 +45,15 @@
 #include "hardware/key.h"
 #include "hardware/run.h"
 #include "hardware/bluetooth.h"
+
+uint8_t BleOrder[]={"AT"};
+uint8_t BleReset[]={"AT+RESET"};
 /*
                          Main application
  */
 void main(void)
 {
-    
+    static uint8_t i,j,n,m;
      uint8_t  KeyValue;
     // Initialize the device
     SYSTEM_Initialize();
@@ -71,29 +74,111 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
      FAN_OFF();
+  
     while (1)
     {
-       
-      
-      
-       
-          KeyValue = KEY_Scan();
+        
+        BLE_MODE_RC2_SetLow();
+        EUSART_BleCommandTxData(0);
+        if(run_t.eusartTx_flag==1){
+            n++;
+         run_t.eusartTx_Num=0;
+         run_t.eusartTx_flag=0;
+         DELAY_milliseconds(200);
+         if(n>20){
+           run_t.eusartTx_flag++;
+         }
+        }
+#if 0
+        n= sizeof(BleReset)/sizeof(BleReset[0]);
+        for(i=0;i<n;i++){
+          EUSART_Write(BleReset[i]);
+        }
+        //if(i>=n)i=0;
+        
+        for(j=0;j<2;j++){
+            EUSART_Write(BleOrder[j]);
+        }
+        if(j>=2)j=0;
+        DELAY_milliseconds(200);
+#endif
+#if 0
+       if(run_t.bleSetName==0){
+			//for(i=0;i<n;i++){
+             // seq=1;
+			EUSART_Write(BleAssignedName[i]);
+             i++; 
+            if(i==(n-1)){
+                run_t.bleSetName=1;
+              
+            }
+          }
+          else{ 
+              m++;
+              run_t.bleSetName=0;
+              i=0;
+              DELAY_milliseconds(200);
+              if(m==50){
+                 run_t.bleSetName=1;
+              }
+              
+          }
+#endif
+      // BlueTooth_SetupAT_Function();
+#if 0
+        n= sizeof(BleAssignedName)/sizeof(BleAssignedName[0]);
+	     m= sizeof(BleAssignedBaud)/sizeof(BleAssignedBaud[0]);
+
+	
+	
+	
+          BLE_MODE_RC2_SetLow();
+         
+          if(run_t.bleSetName==0){
+        
+			EUSART_Write(BleAssignedName[i]);
+             i++; 
+            if(i==(n-1)){
+                run_t.bleSetName=1;
+               
+						//DELAY_milliseconds(100);
+			}
+          }
+          else{
+             run_t.bleSetName=0;
+             i=0;
+            DELAY_milliseconds(500);
+          }
+#endif   
+#if 0
+        run_t.bleLinked = BlueTooth_CheckLink();
+        if(run_t.bleLinked==1){
+            if(link==0){
+                EUSART_Initialize_9600();
+                link++;
+            }
+        BLE_MODE_RC2_SetLow();
+        BlueTooth_SetupAT_Function();
+        }
+        KeyValue = KEY_Scan();
          EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
           if(KeyValue !=0){
             CheckMode(KeyValue);
           }
           else if(run_t.gBle_Mode==1){
-            if(run_t.bleLinked!=1){
-                  // BLE_MODE_RC2_SetLow();
-                  BlueTooth_SetupAT_Function();
-            }
+           
+           // BlueTooth_SetupAT_Function();
             run_t.bleLinked = BlueTooth_CheckLink();
-            EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
+           // if(run_t.bleLinked==1){
+               // EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
+               // Bluetooth_RunCmd();
+           // }
             Bluetooth_RunCmd();
             run_t.gBle_Mode=0;
           } 
          CheckRun();
-          FAN_Run();
+         FAN_Run();
+#endif
 }
 }
 

@@ -25,7 +25,6 @@ typedef struct{
     uint8_t bleLinked;
     uint8_t gKeyItem;  //key input whiche item name
 
-    
     uint16_t gColorPwm;
  
 }RUNREF_T;

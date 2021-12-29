@@ -1,107 +1,105 @@
-#include "bluetooth.h"
-#include "run.h"
-#include "lamp.h"
+#include "../hardware/bluetooth.h"
+#include "../hardware/run.h"
+#include "../hardware/lamp.h"
+
+#define TX_MAX_NUMBER    25
+
 volatile uint8_t i=0;
-
+uint8_t outputBuf[TX_MAX_NUMBER];
 static uint8_t bleBuf[8];
-volatile uint8_t BleAssignedName[]={"AT+SPPNAME=ForenScope CSI"};
+//volatile uint8_t BleAssignedName[]={"AT+SPPNAME=ForenScope CSI"};
+//volatile uint8_t BleAssignedBaud[]={"AT+BAUD=1"}; //setup baud rate is 9600
 
-//volatile uint8_t BleSetOpenBaud[]={"AT+BAUDABT=1"}; //allow set baud rate 
-volatile uint8_t BleAssignedBaud[]={"AT+BAUD=1"}; //setup baudrate is 9600
-uint8_t outputBuf[8];
 
 void BlueTooth_Init(void)
 {
    BLE_RST_RC4_SetHigh() ; //BLE is high
-   BLE_MODE_RC2_SetHigh();  //setup transfer
+   BLE_MODE_RC2_SetLow();
    
 }
 
 
 void BlueTooth_SetupAT_Function(void)
 {
-     static uint8_t i,j,n;
+     static uint8_t i,j,n,m,times;
 	 static uint8_t seq=1;
 	 
-	 BLE_MODE_RC2_SetLow();
-	   
-	   
-	if(run_t.bleSetName==0){
-			for(n=0;n<27;n++){
-			EUSART_Write(BleAssignedName[n]);
-				
-					if(BleAssignedName[n]=='\0'){
-						n=50;
-						run_t.bleSetName=1;
-						//DELAY_milliseconds(100);
-					}
-			}
-	}
-	run_t.bleSetName=0;
-	   
-	 
+	 n= sizeof(BleAssignedName)/sizeof(BleAssignedName[0]);
+	 m= sizeof(BleAssignedBaud)/sizeof(BleAssignedBaud[0]);
+
 	 switch(seq){
 		 
 	 case 0:
-	   
-	       return ;
+	      
+         return ;
+         
 	 break;
 	
-	 case 10 :
-		if(run_t.bleOpenBaud==0){
-			for(i=0;i<15;i++){
-			EUSART_Write(BleSetOpenBaud[i]);
-					
-					if(BleSetOpenBaud[i]=='\0'){
-						run_t.bleOpenBaud=1;
-						DELAY_milliseconds(100);
-					}
-			}
-		}
-		seq=2;
+	 case 1 :
+          BLE_MODE_RC2_SetLow();
+         
+          if(run_t.bleSetName==0){
+			//for(i=0;i<n;i++){
+              seq=1;
+			EUSART_Write(BleAssignedName[i]);
+             i++; 
+            if(i==(n-1)){
+                run_t.bleSetName=1;
+              
+            }
+          }
+          else{ 
+              seq=2;
+              DELAY_milliseconds(200);
+          }
+          
+	     
+		
+		
 	 break;
 	 
-	 case 20:
+	 case 2:
+         BLE_MODE_RC2_SetLow();
 		if(run_t.bleSetBaud==0){
-			for(j=0;j<12;j++){
-				EUSART_Write(BleAssignedBaud[j]);
-					if(BleAssignedBaud[j]=='\0'){
-				
-						run_t.bleSetBaud=1;
-						DELAY_milliseconds(100);
-					}
+            seq=2;
+		   EUSART_Write(BleAssignedBaud[j]);
+                j++;
+				if(j==(m-1)){
+                    run_t.bleSetBaud=1;
+                    
+				}
 			}
-		}
-		seq=3;
+        else{
+            seq=3;
+            DELAY_milliseconds(200);
+        }
+          
+        
+		
+		
 	 break;
 	 
 	 case 3:
-		if(run_t.bleSetName==0){
-			for(n=0;n<27;n++){
-			EUSART_Write(BleAssignedName[n]);
-				
-					if(BleAssignedName[n]=='\0'){
-						
-						run_t.bleSetName=1;
-						DELAY_milliseconds(100);
-					}
-			}
-		}
+         if(run_t.bleSetName==1 && run_t.bleSetBaud==1){
+             times++;
+              seq=1;
+              i=0;
+              j=0;
+              run_t.bleSetName=0;
+               run_t.bleSetBaud=0;
+             if(times==30){
+             seq =0;
+             run_t.bleSetName=1;
+              run_t.bleSetBaud=1;
+             EUSART_Initialize_9600();
+             BLE_MODE_RC2_SetHigh();
+             }
+         }
+         else{
+           seq =1;
+         }
 		
-		if(run_t.bleLinked==1){
-		       seq =1;
-			    run_t.bleOpenBaud=0;
-        run_t.bleSetBaud=0;
-        run_t.bleSetName=0;
-        }
-        else{
-            seq=1;
-        run_t.bleOpenBaud=0;
-        run_t.bleSetBaud=0;
-        run_t.bleSetName=0;
-        }
-		
-	break;
+	  break;
      }
 	 
 }
@@ -310,11 +308,58 @@ void Bluetooth_RunCmd(void)
                     run_t.gADJ_brightness=0;
 	}
 	
-		               
-			
+}
 
-             
-			
-	
-	
+/******************************************************************************
+ * 
+ *Function Name: EUSART_TxData(uint8_t index) 
+ * Function:transmit data
+ * Input Ref:
+ * Return Ref:
+ * 
+ *****************************************************************************/
+void EUSART_BleCommandTxData(uint8_t index)
+{
+    
+   //AT+SPPNAME=ForenScope CSI
+    
+     outputBuf[0]='A';
+     outputBuf[1]='T';
+     outputBuf[2]='+';
+     outputBuf[3]='S';
+     outputBuf[4]='P';
+     outputBuf[5]='P';
+     outputBuf[6]='N';
+     outputBuf[7]='A';
+     outputBuf[8]='M';
+     outputBuf[9]='E';
+     outputBuf[10]='=';
+       
+	outputBuf[11]='F'; //0x46
+	outputBuf[12]='o'; //0x50
+    outputBuf[13]='r'; //0x4F ->order
+    outputBuf[14]='e';
+	outputBuf[15]='n'; 
+    outputBuf[16]='S';
+    outputBuf[17]='c';
+    outputBuf[18]='o';
+    outputBuf[19]='p';
+    outputBuf[20]='e';
+    outputBuf[21]=' ';
+    outputBuf[22]='C';
+    outputBuf[23]='S';
+    outputBuf[24]='I';
+//	outputBuf[3]=index+0x30;	// change to ascii number for decimal number 0~9
+   if(run_t.eusartTx_flag ==0){
+   	   PIE3bits.TXIE=0;
+      if(transOngoingFlag==0){
+            TX1REG = outputBuf[run_t.eusartTx_Num];
+	        run_t.eusartTx_Num++;
+            
+       }
+	   transOngoingFlag=1;
+	   if(run_t.eusartTx_Num==25)run_t.eusartTx_flag=1;
+	    PIE3bits.TXIE=1;
+   	}
+   
 }

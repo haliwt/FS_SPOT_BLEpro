@@ -26,19 +26,20 @@ void ColorWhite_8_OFF(void)
 void Laser_ON(void)
 {
   TMR4_Start(); //WT.2021.12.22
-  PWM4_LoadDutyValue(127);
- // DELAY_milliseconds(1);
- // LASER_RC0_SetLow() ;
- // DELAY_milliseconds(1);
- // LASER_RC0_SetHigh() ;
+   PWM4_LoadDutyValue(143);//127
+/// DELAY_milliseconds(20);
+///  LASER_RC0_SetLow() ;
+/// DELAY_milliseconds(20);
+/// LASER_RC0_SetHigh() ;
+  
 }
 void Laser_OFF(void)
 {
-   TMR4_Start(); //WT.2021.12.22
+    TMR4_Start(); //WT.2021.12.22
     PWM4_LoadDutyValue(159);
    
-   // LASER_RC0_SetHigh() ;
-    
+ /// LASER_RC0_SetHigh() ;
+   
 }
 
 void WhichOneColorLamp_ON(uint8_t colorlamp)

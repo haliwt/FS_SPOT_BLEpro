@@ -114,7 +114,9 @@ extern void (*EUSART_RxDefaultInterruptHandler)(void);
   @Comment
     
 */
-void EUSART_Initialize(void);
+//void EUSART_Initialize(void);
+void EUSART_Initialize_9600(void);
+void EUSART_Initialize_115200(void);
 
 /**
   @Summary

@@ -53,7 +53,7 @@
   Section: Macro Declarations
 */
 
-#define EUSART_TX_BUFFER_SIZE 8
+#define EUSART_TX_BUFFER_SIZE 100
 #define EUSART_RX_BUFFER_SIZE 8
 
 /**
@@ -61,7 +61,8 @@
 */
 volatile uint8_t eusartTxHead = 0;
 volatile uint8_t eusartTxTail = 0;
-volatile uint8_t eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
+//volatile uint8_t eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
+volatile uint8_t eusartTxBuffer[]={"AT+SPPNAME=ForenScope CSI"};
 volatile uint8_t eusartTxBufferRemaining;
 
 volatile uint8_t eusartRxHead = 0;
@@ -84,8 +85,64 @@ void (*EUSART_ErrorHandler)(void);
 void EUSART_DefaultFramingErrorHandler(void);
 void EUSART_DefaultOverrunErrorHandler(void);
 void EUSART_DefaultErrorHandler(void);
+/**********************************************************************
+ * 
+ * Function Name:void EUSART_Initialize_9600(void)
+ * Function: Baud rate setup is 9600
+ * 
+ * 
+ *********************************************************************/
+void EUSART_Initialize_9600(void)
+{
+    // disable interrupts before changing states
+    PIE3bits.RCIE = 0;
+    EUSART_SetRxInterruptHandler(EUSART_Receive_ISR);
+    PIE3bits.TXIE = 0;
+    EUSART_SetTxInterruptHandler(EUSART_Transmit_ISR);
+    // Set the EUSART module to the options selected in the user interface.
 
-void EUSART_Initialize(void)
+    // ABDOVF no_overflow; SCKP Non-Inverted; BRG16 16bit_generator; WUE disabled; ABDEN disabled; 
+    BAUD1CON = 0x08;
+
+    // SPEN enabled; RX9 8-bit; CREN enabled; ADDEN disabled; SREN disabled; 
+    RC1STA = 0x90;
+
+    // TX9 8-bit; TX9D 0; SENDB sync_break_complete; TXEN enabled; SYNC asynchronous; BRGH hi_speed; CSRC slave; 
+    TX1STA = 0x24;
+
+    // SP1BRGL 207; 
+    SP1BRGL = 0xCF;
+
+    // SP1BRGH 0; 
+    SP1BRGH = 0x00;
+
+
+    EUSART_SetFramingErrorHandler(EUSART_DefaultFramingErrorHandler);
+    EUSART_SetOverrunErrorHandler(EUSART_DefaultOverrunErrorHandler);
+    EUSART_SetErrorHandler(EUSART_DefaultErrorHandler);
+
+    eusartRxLastError.status = 0;
+
+    // initializing the driver state
+    eusartTxHead = 0;
+    eusartTxTail = 0;
+    eusartTxBufferRemaining = sizeof(eusartTxBuffer);
+
+    eusartRxHead = 0;
+    eusartRxTail = 0;
+    eusartRxCount = 0;
+
+    // enable receive interrupt
+    PIE3bits.RCIE = 1;
+}
+/**********************************************************************
+ * 
+ * Function Name:void EUSART_Initialize_115200(void)
+ * Function: Baud rate setup is 115200b
+ * 
+ * 
+ *********************************************************************/
+void EUSART_Initialize_115200(void)
 {
     // disable interrupts before changing states
     PIE3bits.RCIE = 0;
@@ -128,7 +185,11 @@ void EUSART_Initialize(void)
     // enable receive interrupt
     PIE3bits.RCIE = 1;
 }
-
+/***************************************************************
+ * 
+ * 
+ * 
+ **************************************************************/
 bool EUSART_is_tx_ready(void)
 {
     return (eusartTxBufferRemaining ? true : false);
