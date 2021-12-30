@@ -48,6 +48,7 @@
   Section: Included Files
 */
 #include "eusart.h"
+#include "../hardware/bluetooth.h"
 
 /**
   Section: Macro Declarations
@@ -67,7 +68,7 @@ volatile uint8_t eusartTxBufferRemaining;
 
 volatile uint8_t eusartRxHead = 0;
 volatile uint8_t eusartRxTail = 0;
-volatile uint8_t eusartRxBuffer[EUSART_RX_BUFFER_SIZE];
+//volatile uint8_t eusartRxBuffer[EUSART_RX_BUFFER_SIZE];
 volatile eusart_status_t eusartRxStatusBuffer[EUSART_RX_BUFFER_SIZE];
 volatile uint8_t eusartRxCount;
 volatile eusart_status_t eusartRxLastError;
@@ -96,9 +97,9 @@ void EUSART_Initialize_9600(void)
 {
     // disable interrupts before changing states
     PIE3bits.RCIE = 0;
-    EUSART_SetRxInterruptHandler(EUSART_Receive_ISR);
+    EUSART_SetRxInterruptHandler(EUSART_Receive_ISR);//Ble_RxData_EUSART_ISR
     PIE3bits.TXIE = 0;
-    EUSART_SetTxInterruptHandler(EUSART_Transmit_ISR);
+    EUSART_SetTxInterruptHandler(EUSART_Transmit_ISR);//
     // Set the EUSART module to the options selected in the user interface.
 
     // ABDOVF no_overflow; SCKP Non-Inverted; BRG16 16bit_generator; WUE disabled; ABDEN disabled; 

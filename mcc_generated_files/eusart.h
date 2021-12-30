@@ -71,7 +71,9 @@
 /**
   Section: Data Type Definitions
 */
-
+volatile uint8_t eusartRxBuffer[9];
+        
+        
 typedef union {
     struct {
         unsigned perr : 1;

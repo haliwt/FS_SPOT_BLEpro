@@ -1,6 +1,7 @@
 #include "../hardware/bluetooth.h"
 #include "../hardware/run.h"
 #include "../hardware/lamp.h"
+#include"../mcc_generated_files/eusart.h"
 
 #define TX_MAX_NUMBER    25
 
@@ -9,7 +10,7 @@ uint8_t outputBuf[TX_MAX_NUMBER];
 uint8_t outputBaudBuf[9];
 uint8_t outputResetBuf[8];
 uint8_t outputBaudSetBuf[12];
-uint8_t bleBuf[8];
+static uint8_t bleBuf[9];
 //volatile uint8_t BleAssignedName[]={"AT+SPPNAME=ForenScope CSI"};
 //volatile uint8_t BleAssignedBaud[]={"AT+BAUD=1"}; //setup baud rate is 9600
 
@@ -175,41 +176,181 @@ void Ble_RxData_EUSART(void)
 		}
 		else if(i==1){
             
-	        if(bleBuf[1]=='X')
-	             TX1REG = bleBuf[1];//recdata[i]; // ???????? // ??
+	        if(bleBuf[1]=='X'){
+	            // TX1REG = bleBuf[1];//recdata[i]; // ???????? // ??
+            }
 	        else i=0;
 		}
-		else if(i==2){
+        /******/
+        else if(i==2){
+            if(bleBuf[2]=='S'){
             
-
-			if(bleBuf[2]=='B' || bleBuf[2]=='L' || bleBuf[2]=='F' ){
-                ble_t.bleInputCmd[0]=bleBuf[2];
-	             TX1REG = bleBuf[2];//recdata[i]; // ???????? // ??
+            }
+            else
+                i=0;
+        
+        }
+        else if(i==3){
+            if(bleBuf[3]=='P'){
+            
+            }
+            else
+                i=0;
+        
+        }
+        else if(i==4){
+            if(bleBuf[4]=='O'){
+            
+            }
+            else
+                i=0;
+        }
+        else if(i==5){
+             if(bleBuf[5]=='R'){
+            
+            }
+            else
+                i=0;
+        
+        
+        }
+         else if(i==6){
+             if(bleBuf[6]=='T'){
+            
+            }
+            else
+                i=0;
+        
+       }
+        /*up add new item*/
+		else if(i==7){
+            if(bleBuf[7]=='B' || bleBuf[7]=='L' || bleBuf[7]=='F' ){
+                ble_t.bleInputCmd[0]=bleBuf[7];
+	            // TX1REG = bleBuf[7];//recdata[i]; // ???????? // ??
             }
 			else i=0;
 		}
-		else if(i==3){
+		else if(i==8){
 
-		    if((bleBuf[3] -0x30) >12){
+		    if((bleBuf[7] -0x30) >12){
                  i=0;
             }
 			else{
-			   ble_t.bleInputCmd[1]=bleBuf[3]; 
+			   ble_t.bleInputCmd[1]=bleBuf[8]; 
               
-			   TX1REG = bleBuf[3];//recdata[i]; // ???????? // ??
+			  // TX1REG = bleBuf[8];//recdata[i]; // ???????? // ??
 			}
 
 		 }
         i++;
-		if(i==4){
+		if(i==9){
             i=0;
             run_t.gBle_Mode=1;
         }
         
      PIE3bits.RC1IE = 1; 
-     PIE3bits.TX1IE = 1;
+   //  PIE3bits.TX1IE = 1;
 	
 	
+}
+
+/******************************************************************************
+ * 
+ *Function Name: void Ble_RxData_EUSART_ISR(void)
+ * 
+ * 
+ *****************************************************************************/
+void Ble_RxData_EUSART_ISR(void)
+{
+	//PIE3bits.RC1IE = 0;
+    static uint8_t i=0;  
+        
+        bleBuf[i]=RC1REG;
+        switch(i){
+            
+            case 0:
+             if(bleBuf[0]=='M'){
+                     i=1;
+                 
+			  }
+		     break;
+            case 1:
+		       if(bleBuf[1]=='X'){
+	              i=2;
+              }
+	        else i=0;
+		
+        break;
+        /*****/
+            case 2:
+    
+            if(bleBuf[2]=='S'){
+                i=3;
+            }
+            else
+                i=0;
+        
+            break;
+            case 3:
+            if(bleBuf[3]=='P'){
+                i=4;
+            }
+            else
+                i=0;
+        
+            break;
+            case 4:
+            if(bleBuf[4]=='O'){
+                i=5;
+            }
+            else
+                i=0;
+            break;
+            case 5:
+             if(bleBuf[5]=='R'){
+                 i=5;
+            }
+            else
+                i=0;
+        
+        
+             break;
+             
+            case 6:
+             if(bleBuf[6]=='T'){
+                 i=7;
+            }
+            else
+                i=0;
+        
+             break;
+        /*up add new item*/
+            case 7:
+            if(bleBuf[7]=='B' || bleBuf[7]=='L' || bleBuf[7]=='F' ){
+                ble_t.bleInputCmd[0]=bleBuf[7];
+                i=8;
+            }
+			else i=0;
+            break;
+            case 8:
+
+		    if((bleBuf[7] -0x30) >12){
+                 i=0;
+            }
+			else{
+			   ble_t.bleInputCmd[1]=bleBuf[8]; 
+             }
+            break;
+     
+		if(i==8){
+            i=0;
+            run_t.gBle_Mode=1;
+        }
+        
+   //  PIE3bits.RC1IE = 1; 
+   //  PIE3bits.TX1IE = 1;
+	
+        }
 }
 
 /*********************************************************************
@@ -222,14 +363,15 @@ void Ble_RxData_EUSART(void)
 *********************************************************************/
 void Bluetooth_RunCmd(void)
 {
-
+    static uint8_t deCode[9];
     static unsigned char tcolor32,tcolor8,tlaser,flag,bleTarget;
 	static uint8_t color32=0xff,color8=0xff,laser=0xff;
 	uint8_t cmdType=ble_t.bleInputCmd[0];
      bleTarget=ble_t.bleInputCmd[1]-0x30;
-	//bleIndex=bleInputCmd[2]-0x30;
-	//static uint8_t keyBR_Counts=0;
-	if(ble_t.bleInputCmd[0] =='B' )
+	// deCode[0] =eusartRxBuffer[0];
+     deCode[0]=eusartRxBuffer[7];
+     deCode[1]=eusartRxBuffer[8];
+	if(ble_t.bleInputCmd[0] =='B' || deCode[0]=='B' )
 	{
 		flag =1;
 	    run_t.gBleItem=1;
@@ -252,7 +394,7 @@ void Bluetooth_RunCmd(void)
 
 	if(flag==1){ //LED AND LASER
 		
-		switch(bleTarget){
+		switch(bleTarget || deCode[1]){
 			
 	   
 		case 1:	            
@@ -303,7 +445,7 @@ void Bluetooth_RunCmd(void)
 		}
 	
 	}
-	
+	//turn off all lamp and laser 
 	if(flag==3){
 		
 			 run_t.gTurnOffLamp=0;
@@ -315,7 +457,7 @@ void Bluetooth_RunCmd(void)
 
 /******************************************************************************
  * 
- *Function Name: EUSART_TxData(uint8_t index) 
+ *Function Name: EUSART_TxData_Name(uint8_t index) 
  * Function:transmit data
  * Input Ref:
  * Return Ref:
@@ -366,7 +508,14 @@ void EUSART_BleCommandTxData_Name(uint8_t index)
    	}
    
 }
-
+/******************************************************************************
+ * 
+ *Function Name: void EUSART_BleCommandTxBaud(void)
+ * Function:transmit data
+ * Input Ref:
+ * Return Ref:
+ * 
+ *****************************************************************************/
 void EUSART_BleCommandTxBaud(void)
 {
    //AT+BAUD=1
@@ -379,7 +528,7 @@ void EUSART_BleCommandTxBaud(void)
      outputBaudBuf[5]='U';
      outputBaudBuf[6]='D';
      outputBaudBuf[7]='=';
-     outputBaudBuf[8]='8';
+     outputBaudBuf[8]='8'; //'1'-9600bit ;'8'-115200bit
    if(run_t.eusartTx_Baud_flag ==0){
    	   PIE3bits.TXIE=0;
       if(transOngoingFlag==0){

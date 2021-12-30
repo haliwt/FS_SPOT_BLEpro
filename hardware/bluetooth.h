@@ -35,5 +35,6 @@ void EUSART_BleCommandTxData_Name(uint8_t index);
 void EUSART_BleCommandTxBaud(void);
 void EUSART_BleCommandTxReset(void);
 void EUSART_BleCommandTxOpenSetBaud(void);
+void Ble_RxData_EUSART_ISR(void);
 
 #endif
