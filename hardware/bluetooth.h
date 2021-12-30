@@ -12,6 +12,8 @@ typedef struct _BLE{
     uint8_t ble_reset_flag;
     uint8_t ble_openbaud_n;
     uint8_t ble_openbaud_flag;
+    uint8_t ble_response_n;
+    uint8_t ble_response_flag;
     
 }BLE_T;
 
@@ -36,5 +38,7 @@ void EUSART_BleCommandTxBaud(void);
 void EUSART_BleCommandTxReset(void);
 void EUSART_BleCommandTxOpenSetBaud(void);
 void Ble_RxData_EUSART_ISR(void);
+
+void EUSART_BleResponseEvent(void);
 
 #endif

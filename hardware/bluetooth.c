@@ -4,6 +4,7 @@
 #include"../mcc_generated_files/eusart.h"
 
 #define TX_MAX_NUMBER    25
+#define TX_RESPONSE_TEXT_NUMBER     10
 
 volatile uint8_t i=0;
 uint8_t outputBuf[TX_MAX_NUMBER];
@@ -11,8 +12,8 @@ uint8_t outputBaudBuf[9];
 uint8_t outputResetBuf[8];
 uint8_t outputBaudSetBuf[12];
 static uint8_t bleBuf[9];
-//volatile uint8_t BleAssignedName[]={"AT+SPPNAME=ForenScope CSI"};
-//volatile uint8_t BleAssignedBaud[]={"AT+BAUD=1"}; //setup baud rate is 9600
+static uint8_t outputResponseText[TX_RESPONSE_TEXT_NUMBER];
+
 
 
 void BlueTooth_Init(void)
@@ -512,8 +513,8 @@ void EUSART_BleCommandTxData_Name(uint8_t index)
  * 
  *Function Name: void EUSART_BleCommandTxBaud(void)
  * Function:transmit data
- * Input Ref:
- * Return Ref:
+ * Input Ref:NO
+ * Return Ref:NO
  * 
  *****************************************************************************/
 void EUSART_BleCommandTxBaud(void)
@@ -596,4 +597,32 @@ void EUSART_BleCommandTxReset(void)
 	   if( ble_t.ble_reset_n==8)ble_t.ble_reset_flag=1;
 	    PIE3bits.TXIE=1;
    	}
+}
+/******************************************************************************
+ * 
+ *Function Name: void EUSART_BleResponseEvent(void)
+ * Function:transmit data
+ * Input Ref:NO
+ * Return Ref:NO
+ * 
+ *****************************************************************************/
+void EUSART_BleResponseEvent(void)
+{
+        
+    
+     outputResponseText[0]='L';
+     outputResponseText[1]='O';
+     outputResponseText[2]='1';
+    if(ble_t.ble_response_flag ==0){
+   	   PIE3bits.TXIE=0;
+      if(transOngoingFlag==0){
+            TX1REG = outputResponseText[ble_t.ble_response_n];
+	        ble_t.ble_response_n++;
+            
+       }
+	   transOngoingFlag=1;
+	   if(ble_t.ble_response_n==3)ble_t.ble_response_flag =1;
+	    PIE3bits.TXIE=1;
+   	} 
+
 }

@@ -1,6 +1,7 @@
 #include "run.h"
 #include "key.h"
 #include "lamp.h"
+#include"../hardware/bluetooth.h"
 
 #define NORMAL_LEVEL_DEFAULT	10
 #define NORMAL_LEVEL_MAX		20
@@ -231,6 +232,7 @@ static void FAN_ON(void);
          case white_32:
             if(run_t.gPowerOn==1){
                 LED6_Power_ON();
+                
             }
             else{
               LED6_Power_OFF();  
@@ -239,6 +241,7 @@ static void FAN_ON(void);
             
             if(run_t.gBleItem==1){
                WhichOneLed_ON(0);//Power On 
+               EUSART_BleResponseEvent();
             }
             else{
                 WhichOneLed_ON(2);
@@ -266,6 +269,7 @@ static void FAN_ON(void);
               
               if(run_t.gBleItem ==1){
                  WhichOneLed_ON(0);//Power On 
+                 EUSART_BleResponseEvent();
                  
               }
               else {

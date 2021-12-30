@@ -95,7 +95,7 @@ void main(void)
         }
         if( run_t.eusartTx_flag==3){
               BLE_MODE_RC2_SetHigh();
-      //   EUSART_SetRxInterruptHandler(Ble_RxData_EUSART_ISR);
+            // EUSART_BleResponseEvent();
           
         Bluetooth_RunCmd();
       
