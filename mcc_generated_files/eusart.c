@@ -49,6 +49,7 @@
 */
 #include "eusart.h"
 #include "../hardware/bluetooth.h"
+#include"../hardware/run.h"
 
 /**
   Section: Macro Declarations
@@ -310,6 +311,106 @@ void EUSART_RxDataHandler(void){
         eusartRxHead = 0;
     }
     eusartRxCount++;
+    switch(eusartRxCount){
+            
+            case 1:
+             if(eusartRxBuffer[0]=='M'){
+             }
+             else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+             }
+		     break;
+            case 2:
+		       if(eusartRxBuffer[1]=='X'){
+	              
+              }
+               else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
+	       
+		
+             break;
+        /*****/
+            case 3:
+    
+            if(eusartRxBuffer[2]=='S'){
+                
+            }
+             else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
+                
+        
+            break;
+            case 4:
+            if(eusartRxBuffer[3]=='P'){
+                
+            }
+             else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
+        
+            break;
+            case 5:
+            if(eusartRxBuffer[4]=='O'){
+                
+            }
+             else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
+                
+            break;
+            case 6:
+             if(eusartRxBuffer[5]=='R'){
+                 
+            }
+            else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
+        
+        
+             break;
+             
+            case 7:
+             if(eusartRxBuffer[6]=='T'){
+                 
+            }
+             else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
+        
+            break;
+            case 8:
+            
+                ble_t.bleInputCmd[0]=eusartRxBuffer[7];
+           
+			
+            break;
+            case 9:
+
+		ble_t.bleInputCmd[1]=eusartRxBuffer[8];
+               
+             
+            break;
+            
+            default:
+               eusartRxCount=0;
+               eusartRxHead=0;
+            break;
+     
+		if(eusartRxCount==9){
+            eusartRxCount=0;
+             run_t.gBle_Mode=1;
+        }
+        
+    }
   //  PIE3bits.RCIE = 1;
 }
 

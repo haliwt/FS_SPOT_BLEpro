@@ -276,13 +276,13 @@ void Ble_RxData_EUSART_ISR(void)
                  
 			  }
 		     break;
+             
             case 1:
 		       if(bleBuf[1]=='X'){
 	              i++;
               }
 	        else i=0;
-		
-        break;
+		   break;
         /*****/
             case 2:
     
@@ -293,6 +293,7 @@ void Ble_RxData_EUSART_ISR(void)
                 i=0;
         
             break;
+            
             case 3:
             if(bleBuf[3]=='P'){
                 i++;
@@ -301,6 +302,7 @@ void Ble_RxData_EUSART_ISR(void)
                 i=0;
         
             break;
+            
             case 4:
             if(bleBuf[4]=='O'){
                 i=5;
@@ -308,6 +310,7 @@ void Ble_RxData_EUSART_ISR(void)
             else
                 i=0;
             break;
+            
             case 5:
              if(bleBuf[5]=='R'){
                  i++;
@@ -333,7 +336,9 @@ void Ble_RxData_EUSART_ISR(void)
                 i++;
             }
 			else i=0;
+            
             break;
+            
             case 8:
 
 		    if((bleBuf[7] -0x30) >12){
@@ -371,12 +376,12 @@ void Bluetooth_RunCmd(void)
     static unsigned char tcolor32,tcolor8,tlaser,flag,bleTarget;
 	static uint8_t color32=0xff,color8=0xff,laser=0xff;
 	//uint8_t cmdType=ble_t.bleInputCmd[0];
-   //  bleTarget=ble_t.bleInputCmd[1]-0x30;
+     bleTarget=ble_t.bleInputCmd[1]-0x30;
 	// deCode[0] =eusartRxBuffer[0];
      //deCode[0]=eusartRxBuffer[7];
-    ble_t.bleInputCmd[0]=eusartRxBuffer[7];
+   // ble_t.bleInputCmd[0]=eusartRxBuffer[7];
      //deCode[1]=eusartRxBuffer[8]-0x30;
-    bleTarget=eusartRxBuffer[8]-0x30;
+   // bleTarget=eusartRxBuffer[8]-0x30;
    //eusartRxCount;
 	if(ble_t.bleInputCmd[0] =='B'  ) //open lamp or laser
 	{
@@ -402,7 +407,7 @@ void Bluetooth_RunCmd(void)
 
 	if(flag==1){ //LED AND LASER
 		
-		switch(bleTarget || deCode[1]){
+		switch(bleTarget ){
 			
 	   
 		case 1:	            
