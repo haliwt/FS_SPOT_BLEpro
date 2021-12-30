@@ -78,17 +78,93 @@ void main(void)
     while (1)
     {
         
-        BLE_MODE_RC2_SetLow();
-        EUSART_BleCommandTxData(0);
-        if(run_t.eusartTx_flag==1){
-            n++;
-         run_t.eusartTx_Num=0;
-         run_t.eusartTx_flag=0;
-         DELAY_milliseconds(200);
-         if(n>20){
-           run_t.eusartTx_flag++;
-         }
+        
+        if(run_t.eusartTx_flag<2){
+            BLE_MODE_RC2_SetLow();
+            EUSART_BleCommandTxData_Name(0);
+            if(run_t.eusartTx_flag==1){
+                n++;
+             run_t.eusartTx_Num=0;
+             run_t.eusartTx_flag=0;
+             DELAY_milliseconds(200);
+             if(n>10){
+               run_t.eusartTx_flag=3;
+              
+             }
+            }
         }
+        if( run_t.eusartTx_flag==3)
+              BLE_MODE_RC2_SetHigh();
+#if 0
+        if(ble_t.ble_reset_flag <2){
+           EUSART_BleCommandTxReset();
+           if(ble_t.ble_reset_flag==1){
+               i++;
+               ble_t.ble_reset_flag=0;
+               ble_t.ble_reset_n=0;
+               if(i>15){
+                 ble_t.ble_reset_flag++;
+                 ble_t.ble_reset_flag=1;
+               }
+                }
+           }
+#endif
+     
+ #if 0
+        if(ble_t.ble_openbaud_flag <2){
+            if(ble_t.ble_openbaud_flag ==1){
+             EUSART_BleCommandTxOpenSetBaud();
+             j++;
+             ble_t.ble_openbaud_flag=0;
+             ble_t.ble_openbaud_n=0;
+             if(j>10){
+                 ble_t.ble_openbaud_flag=3;
+               ble_t.ble_openbaud_flag=1;
+             }
+            }
+        }
+        else  if(run_t.eusartTx_Baud_flag<2){
+            EUSART_BleCommandTxBaud();
+           if(run_t.eusartTx_Baud_flag==1){
+                m++;
+             run_t.eusartTx_Baud_n=0;
+             run_t.eusartTx_Baud_flag=0;
+             DELAY_milliseconds(200);
+             if(m>10){
+                run_t.eusartTx_Baud_flag=2;
+                 run_t.eusartTx_Baud_flag=1;
+               // run_t.eusartTx_flag++;
+              //  EUSART_Initialize_9600();
+             }
+            }
+        }
+        else{
+        
+        
+         if(run_t.eusartTx_Baud_flag==2){
+            EUSART_BleCommandTxData_Name(0);
+            if(run_t.eusartTx_flag==1){
+                n++;
+             run_t.eusartTx_Num=0;
+             run_t.eusartTx_flag=0;
+             DELAY_milliseconds(200);
+             if(n>10){
+               run_t.eusartTx_flag++;
+               run_t.eusartTx_flag=1;
+               run_t.eusartTx_Baud_flag=3;
+             }
+            }
+        }
+        }
+        
+        
+
+       
+#endif
+     //   EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
+      ///     Bluetooth_RunCmd();
+      //    CheckRun();
+      //   FAN_Run();
 #if 0
         n= sizeof(BleReset)/sizeof(BleReset[0]);
         for(i=0;i<n;i++){

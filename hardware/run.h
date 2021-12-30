@@ -24,6 +24,8 @@ typedef struct{
     uint8_t bleSetName;
     uint8_t bleLinked;
     uint8_t gKeyItem;  //key input whiche item name
+    uint8_t eusartTx_Baud_flag;
+    uint8_t eusartTx_Baud_n;
 
     uint16_t gColorPwm;
  

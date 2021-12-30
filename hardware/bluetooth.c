@@ -6,7 +6,10 @@
 
 volatile uint8_t i=0;
 uint8_t outputBuf[TX_MAX_NUMBER];
-static uint8_t bleBuf[8];
+uint8_t outputBaudBuf[9];
+uint8_t outputResetBuf[8];
+uint8_t outputBaudSetBuf[12];
+uint8_t bleBuf[8];
 //volatile uint8_t BleAssignedName[]={"AT+SPPNAME=ForenScope CSI"};
 //volatile uint8_t BleAssignedBaud[]={"AT+BAUD=1"}; //setup baud rate is 9600
 
@@ -318,7 +321,7 @@ void Bluetooth_RunCmd(void)
  * Return Ref:
  * 
  *****************************************************************************/
-void EUSART_BleCommandTxData(uint8_t index)
+void EUSART_BleCommandTxData_Name(uint8_t index)
 {
     
    //AT+SPPNAME=ForenScope CSI
@@ -346,9 +349,9 @@ void EUSART_BleCommandTxData(uint8_t index)
     outputBuf[19]='p';
     outputBuf[20]='e';
     outputBuf[21]=' ';
-    outputBuf[22]='C';
-    outputBuf[23]='S';
-    outputBuf[24]='I';
+    outputBuf[22]='H';//'C';
+    outputBuf[23]='A';//'S';
+    outputBuf[24]='L';//'I';
 //	outputBuf[3]=index+0x30;	// change to ascii number for decimal number 0~9
    if(run_t.eusartTx_flag ==0){
    	   PIE3bits.TXIE=0;
@@ -362,4 +365,86 @@ void EUSART_BleCommandTxData(uint8_t index)
 	    PIE3bits.TXIE=1;
    	}
    
+}
+
+void EUSART_BleCommandTxBaud(void)
+{
+   //AT+BAUD=1
+    
+     outputBaudBuf[0]='A';
+     outputBaudBuf[1]='T';
+     outputBaudBuf[2]='+';
+     outputBaudBuf[3]='B';
+     outputBaudBuf[4]='A';
+     outputBaudBuf[5]='U';
+     outputBaudBuf[6]='D';
+     outputBaudBuf[7]='=';
+     outputBaudBuf[8]='8';
+   if(run_t.eusartTx_Baud_flag ==0){
+   	   PIE3bits.TXIE=0;
+      if(transOngoingFlag==0){
+            TX1REG = outputBaudBuf[run_t.eusartTx_Baud_n];
+	        run_t.eusartTx_Baud_n++;
+            
+       }
+	   transOngoingFlag=1;
+	   if(run_t.eusartTx_Baud_n==9)run_t.eusartTx_Baud_flag=1;
+	    PIE3bits.TXIE=1;
+   	}
+}
+
+void EUSART_BleCommandTxOpenSetBaud(void)
+{
+   //AT+BAUD=1
+    
+     outputBaudSetBuf[0]='A';
+     outputBaudSetBuf[1]='T';
+     outputBaudSetBuf[2]='+';
+     outputBaudSetBuf[3]='B';
+     outputBaudSetBuf[4]='A';
+     outputBaudSetBuf[5]='U';
+     outputBaudSetBuf[6]='D';
+     outputBaudSetBuf[7]='A';
+     outputBaudSetBuf[8]='B';
+     outputBaudSetBuf[9]='T';
+     outputBaudSetBuf[10]='=';
+     outputBaudSetBuf[11]='1';
+   if(ble_t.ble_openbaud_flag ==0){
+   	   PIE3bits.TXIE=0;
+      if(transOngoingFlag==0){
+            TX1REG = outputBaudSetBuf[ble_t.ble_openbaud_n];
+	        ble_t.ble_openbaud_n++;
+            
+       }
+	   transOngoingFlag=1;
+	   if(ble_t.ble_openbaud_n==12)ble_t.ble_openbaud_flag=1;
+	    PIE3bits.TXIE=1;
+   	}
+}
+
+void EUSART_BleCommandTxReset(void)
+{
+   //AT+BAUD=1
+    //AT+SPPNAME=ForenScope CSI
+    
+     outputResetBuf[0]='A';
+     outputResetBuf[1]='T';
+     outputResetBuf[2]='+';
+     outputResetBuf[3]='R';
+     outputResetBuf[4]='E';
+     outputResetBuf[5]='S';
+     outputResetBuf[6]='E';
+     outputResetBuf[7]='T';
+  
+   if(ble_t.ble_reset_flag ==0){
+   	   PIE3bits.TXIE=0;
+      if(transOngoingFlag==0){
+            TX1REG = outputResetBuf[ble_t.ble_reset_n];
+	        ble_t.ble_reset_n++;
+            
+       }
+	   transOngoingFlag=1;
+	   if( ble_t.ble_reset_n==8)ble_t.ble_reset_flag=1;
+	    PIE3bits.TXIE=1;
+   	}
 }
