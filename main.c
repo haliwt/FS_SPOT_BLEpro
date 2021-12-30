@@ -93,8 +93,17 @@ void main(void)
              }
             }
         }
-        if( run_t.eusartTx_flag==3)
+        if( run_t.eusartTx_flag==3){
               BLE_MODE_RC2_SetHigh();
+          EUSART_SetRxInterruptHandler(Ble_RxData_EUSART);
+          
+        Bluetooth_RunCmd();
+      
+         CheckRun();
+         FAN_Run();
+              
+              
+        }
 #if 0
         if(ble_t.ble_reset_flag <2){
            EUSART_BleCommandTxReset();
