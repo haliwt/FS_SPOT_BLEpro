@@ -71,6 +71,10 @@
 /**
   Section: Data Type Definitions
 */
+volatile uint8_t eusartRxHead = 0;
+volatile uint8_t eusartRxTail = 0;
+volatile uint8_t eusartRxCount;
+
 volatile uint8_t eusartRxBuffer[9];
         
         

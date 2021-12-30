@@ -66,11 +66,11 @@ volatile uint8_t eusartTxTail = 0;
 volatile uint8_t eusartTxBuffer[]={"AT+SPPNAME=ForenScope CSI"};
 volatile uint8_t eusartTxBufferRemaining;
 
-volatile uint8_t eusartRxHead = 0;
-volatile uint8_t eusartRxTail = 0;
+//volatile uint8_t eusartRxHead = 0;
+//volatile uint8_t eusartRxTail = 0;
 //volatile uint8_t eusartRxBuffer[EUSART_RX_BUFFER_SIZE];
 volatile eusart_status_t eusartRxStatusBuffer[EUSART_RX_BUFFER_SIZE];
-volatile uint8_t eusartRxCount;
+//volatile uint8_t eusartRxCount;
 volatile eusart_status_t eusartRxLastError;
 
 /**
@@ -301,12 +301,16 @@ void EUSART_Receive_ISR(void)
 
 void EUSART_RxDataHandler(void){
     // use this default receive interrupt handler code
+  //  PIE3bits.RCIE = 0;
+ //   eusartRxCount--;
+    
     eusartRxBuffer[eusartRxHead++] = RC1REG;
     if(sizeof(eusartRxBuffer) <= eusartRxHead)
     {
         eusartRxHead = 0;
     }
     eusartRxCount++;
+  //  PIE3bits.RCIE = 1;
 }
 
 void EUSART_DefaultFramingErrorHandler(void){}

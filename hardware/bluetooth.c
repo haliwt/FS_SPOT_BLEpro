@@ -165,7 +165,7 @@ void Ble_RxData_EUSART(void)
         
         
       bleBuf[i]=RC1REG;
-        PIE3bits.TX1IE = 0;
+    
 		if(i==0){
 			
 			
@@ -263,21 +263,22 @@ void Ble_RxData_EUSART(void)
  *****************************************************************************/
 void Ble_RxData_EUSART_ISR(void)
 {
-	//PIE3bits.RC1IE = 0;
+	PIE3bits.RC1IE = 0;
     static uint8_t i=0;  
-        
+  
         bleBuf[i]=RC1REG;
+    
         switch(i){
             
             case 0:
              if(bleBuf[0]=='M'){
-                     i=1;
+                     i++;
                  
 			  }
 		     break;
             case 1:
 		       if(bleBuf[1]=='X'){
-	              i=2;
+	              i++;
               }
 	        else i=0;
 		
@@ -286,7 +287,7 @@ void Ble_RxData_EUSART_ISR(void)
             case 2:
     
             if(bleBuf[2]=='S'){
-                i=3;
+                i++;
             }
             else
                 i=0;
@@ -294,7 +295,7 @@ void Ble_RxData_EUSART_ISR(void)
             break;
             case 3:
             if(bleBuf[3]=='P'){
-                i=4;
+                i++;
             }
             else
                 i=0;
@@ -309,7 +310,7 @@ void Ble_RxData_EUSART_ISR(void)
             break;
             case 5:
              if(bleBuf[5]=='R'){
-                 i=5;
+                 i++;
             }
             else
                 i=0;
@@ -319,7 +320,7 @@ void Ble_RxData_EUSART_ISR(void)
              
             case 6:
              if(bleBuf[6]=='T'){
-                 i=7;
+                 i++;
             }
             else
                 i=0;
@@ -329,7 +330,7 @@ void Ble_RxData_EUSART_ISR(void)
             case 7:
             if(bleBuf[7]=='B' || bleBuf[7]=='L' || bleBuf[7]=='F' ){
                 ble_t.bleInputCmd[0]=bleBuf[7];
-                i=8;
+                i++;
             }
 			else i=0;
             break;
@@ -340,15 +341,17 @@ void Ble_RxData_EUSART_ISR(void)
             }
 			else{
 			   ble_t.bleInputCmd[1]=bleBuf[8]; 
+               i++;
              }
             break;
      
-		if(i==8){
+		if(i==9){
             i=0;
+            
             run_t.gBle_Mode=1;
         }
         
-   //  PIE3bits.RC1IE = 1; 
+    PIE3bits.RC1IE = 1; 
    //  PIE3bits.TX1IE = 1;
 	
         }
@@ -367,22 +370,26 @@ void Bluetooth_RunCmd(void)
     static uint8_t deCode[9];
     static unsigned char tcolor32,tcolor8,tlaser,flag,bleTarget;
 	static uint8_t color32=0xff,color8=0xff,laser=0xff;
-	uint8_t cmdType=ble_t.bleInputCmd[0];
-     bleTarget=ble_t.bleInputCmd[1]-0x30;
+	//uint8_t cmdType=ble_t.bleInputCmd[0];
+   //  bleTarget=ble_t.bleInputCmd[1]-0x30;
 	// deCode[0] =eusartRxBuffer[0];
-     deCode[0]=eusartRxBuffer[7];
-     deCode[1]=eusartRxBuffer[8];
-	if(ble_t.bleInputCmd[0] =='B' || deCode[0]=='B' )
+     //deCode[0]=eusartRxBuffer[7];
+    ble_t.bleInputCmd[0]=eusartRxBuffer[7];
+     //deCode[1]=eusartRxBuffer[8]-0x30;
+    bleTarget=eusartRxBuffer[8]-0x30;
+   //eusartRxCount;
+	if(ble_t.bleInputCmd[0] =='B'  ) //open lamp or laser
 	{
 		flag =1;
 	    run_t.gBleItem=1;
+       
     }
-	else if(ble_t.bleInputCmd[0]=='L'){
+	else if(ble_t.bleInputCmd[0]=='L'){ //adjust lamp brightness
 		
 		flag =2;
 		 run_t.gBleItem=1;
 	}
-	else if(ble_t.bleInputCmd[0]=='F'){
+	else if(ble_t.bleInputCmd[0]=='F' ){ //turn off lamp and laser
 		
 		flag=3;
 		 run_t.gBleItem=1;
@@ -404,7 +411,7 @@ void Bluetooth_RunCmd(void)
                     run_t.gTurnOffLamp=1;
                     run_t.gRunOrder= white_32;
                     run_t.gID_flag = white_32;
-		
+                      
 							
 		break;
 	case 2:
@@ -414,8 +421,7 @@ void Bluetooth_RunCmd(void)
                      run_t.gTurnOffLamp=1;
                      run_t.gRunOrder= white_8;
                      run_t.gID_flag = white_8;
-		
-		  
+                    
        
 	break;
 	
@@ -430,7 +436,7 @@ void Bluetooth_RunCmd(void)
 
 	}
 	}
-    if(flag ==2)
+    if(flag ==2) //brightness lamp 
 	{
 	    if(bleTarget == 0){
 			
@@ -447,7 +453,7 @@ void Bluetooth_RunCmd(void)
 	
 	}
 	//turn off all lamp and laser 
-	if(flag==3){
+	if(flag==3){ //turn off lamp 
 		
 			 run_t.gTurnOffLamp=0;
                     run_t.gRunOrder= turnOffLamp;
