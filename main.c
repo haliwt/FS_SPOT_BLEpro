@@ -78,7 +78,7 @@ void main(void)
     {
         
        
-        
+        run_t.bleLinked = BlueTooth_CheckLink();
         if(run_t.gEEPROM_start==0){
           run_t.gReadEEPROM_flag=DATAEE_ReadByte(0x10);
           if(run_t.gReadEEPROM_flag==0x0A){
@@ -118,17 +118,14 @@ void main(void)
         }
         if( run_t.eusartTx_flag==4||run_t.gEEPROM_start==1){
             BLE_MODE_RC2_SetHigh();
-            KeyValue = KEY_Scan();
-            CheckMode(KeyValue);
             
-            EUSART_SetRxInterruptHandler(EUSART_RxDataHandler);
-           // EUSART_RxDefaultInterruptHandler=Ble_RxData_EUSART_ISR;//EUSART_RxDataHandler;
-           // if(EUSART_RxDefaultInterruptHandler){
-               // EUSART_RxDefaultInterruptHandler();
-           // }
-           
-          if(run_t.gBle_Mode==1){
-            Bluetooth_RunCmd();
+          KeyValue = KEY_Scan();
+          EUSART_SetRxInterruptHandler(EUSART_RxDataHandler);
+          if(KeyValue !=0){
+            CheckMode(KeyValue);
+          }
+          else if(run_t.gBle_Mode==1){
+             Bluetooth_RunCmd();
             run_t.gBle_Mode=0;
           } 
           CheckRun();

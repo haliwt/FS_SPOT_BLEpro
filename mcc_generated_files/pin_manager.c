@@ -105,13 +105,6 @@ void PIN_MANAGER_Initialize(void)
     INLVLC = 0xFF;
     INLVLE = 0x08;
 
-
-
-
-
-   
-    
-	
     RC0PPS = 0x08;   //RC0->PWM4:PWM4;    
     RXPPS = 0x17;   //RC7->EUSART:RX;    
    // INT0PPS = 0x08;   //RB0->EXT_INT:INT0;    
