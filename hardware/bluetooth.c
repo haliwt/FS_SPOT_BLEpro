@@ -372,17 +372,12 @@ void Ble_RxData_EUSART_ISR(void)
 *********************************************************************/
 void Bluetooth_RunCmd(void)
 {
-    static uint8_t deCode[9];
+    
     static unsigned char tcolor32,tcolor8,tlaser,flag,bleTarget;
 	static uint8_t color32=0xff,color8=0xff,laser=0xff;
 	//uint8_t cmdType=ble_t.bleInputCmd[0];
      bleTarget=ble_t.bleInputCmd[1]-0x30;
-	// deCode[0] =eusartRxBuffer[0];
-     //deCode[0]=eusartRxBuffer[7];
-   // ble_t.bleInputCmd[0]=eusartRxBuffer[7];
-     //deCode[1]=eusartRxBuffer[8]-0x30;
-   // bleTarget=eusartRxBuffer[8]-0x30;
-   //eusartRxCount;
+
 	if(ble_t.bleInputCmd[0] =='B'  ) //open lamp or laser
 	{
 		flag =1;
@@ -407,42 +402,42 @@ void Bluetooth_RunCmd(void)
 
 	if(flag==1){ //LED AND LASER
 		
-		switch(bleTarget ){
-			
-	   
-		case 1:	            
-	
-				 run_t.gLampWhite_32=1;
-                    run_t.gTurnOffLamp=1;
-                    run_t.gRunOrder= white_32;
-                    run_t.gID_flag = white_32;
-                      
-							
-		break;
-	case 2:
-			    
-	
-		 run_t.gLampWhite_8=1;
-                     run_t.gTurnOffLamp=1;
-                     run_t.gRunOrder= white_8;
-                     run_t.gID_flag = white_8;
-                    
-       
-	break;
-	
-	case 3:
-		   Laser_ON();
-		    run_t.gTurnOffLamp=1;
-            run_t.gRunOrder= laser;
-             run_t.gID_flag = laser;
-	break;
-	default:
-	break;
+        switch(bleTarget ){
+            
 
+            case 1:	            
+
+                run_t.gLampWhite_32=1;
+                run_t.gTurnOffLamp=1;
+                run_t.gRunOrder= white_32;
+                run_t.gID_flag = white_32;
+                            
+                                
+            break;
+            case 2:
+                    
+
+                run_t.gLampWhite_8=1;
+                run_t.gTurnOffLamp=1;
+                run_t.gRunOrder= white_8;
+                run_t.gID_flag = white_8;
+                        
+
+            break;
+
+            case 3:
+                Laser_ON();
+                run_t.gTurnOffLamp=1;
+                run_t.gRunOrder= laser;
+                run_t.gID_flag = laser;
+            break;
+            default:
+            break;
+
+        }
 	}
-	}
-    if(flag ==2) //brightness lamp 
-	{
+    if(flag ==2){ //brightness lamp 
+	
 	    if(bleTarget == 0){
 			
 			//ADJ_LampBrightnessADD();
@@ -460,9 +455,9 @@ void Bluetooth_RunCmd(void)
 	//turn off all lamp and laser 
 	if(flag==3){ //turn off lamp 
 		
-			 run_t.gTurnOffLamp=0;
-                    run_t.gRunOrder= turnOffLamp;
-                    run_t.gADJ_brightness=0;
+        run_t.gTurnOffLamp=0;
+        run_t.gRunOrder= turnOffLamp;
+        run_t.gADJ_brightness=0;
 	}
 	
 }
@@ -617,13 +612,13 @@ void EUSART_BleCommandTxReset(void)
  * Return Ref:NO
  * 
  *****************************************************************************/
-void EUSART_BleResponseEvent(void)
+void EUSART_BleResponseEvent(uint8_t lampNum)
 {
         
     
      outputResponseText[0]='L';
      outputResponseText[1]='O';
-     outputResponseText[2]='1';
+     outputResponseText[2]= lampNum;
     if(ble_t.ble_response_flag ==0){
    	   PIE3bits.TXIE=0;
       if(transOngoingFlag==0){

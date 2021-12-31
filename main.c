@@ -46,8 +46,7 @@
 #include "hardware/run.h"
 #include "hardware/bluetooth.h"
 
-uint8_t BleOrder[]={"AT"};
-uint8_t BleReset[]={"AT+RESET"};
+
 /*
                          Main application
  */
@@ -77,34 +76,46 @@ void main(void)
   
     while (1)
     {
-        
-        
-        if(run_t.eusartTx_flag<2){
-            BLE_MODE_RC2_SetLow();
-            EUSART_BleCommandTxData_Name(0);
-            if(run_t.eusartTx_flag==1){
-                n++;
-             run_t.eusartTx_Num=0;
-             run_t.eusartTx_flag=0;
-             DELAY_milliseconds(200);
-             if(n>10){
-               run_t.eusartTx_flag=3;
-              
-             }
+        if(run_t.gEEPROM_start==0){
+          run_t.gReadEEPROM_flag=DATAEE_ReadByte(0x10);
+          if(run_t.gReadEEPROM_flag==0x0A){
+              run_t.gEEPROM_start++;
+            
+          }
+          else{
+            if(run_t.eusartTx_flag<2){
+                BLE_MODE_RC2_SetLow();
+                EUSART_BleCommandTxData_Name(0);
+                if(run_t.eusartTx_flag==1){
+                    n++;
+                run_t.eusartTx_Num=0;
+                run_t.eusartTx_flag=0;
+                DELAY_milliseconds(200); 
+                if(n>10){
+                  run_t.eusartTx_flag=3;
+                  DATAEE_WriteByte(0x10,0x0A);
+                }
+                }
             }
+          }
         }
-        if( run_t.eusartTx_flag==3){
-              BLE_MODE_RC2_SetHigh();
+        if( run_t.eusartTx_flag==3||run_t.gEEPROM_start==1){
+            BLE_MODE_RC2_SetHigh();
+            KeyValue = KEY_Scan();
+            CheckMode(KeyValue);
+            
             EUSART_SetRxInterruptHandler(EUSART_RxDataHandler);
            // EUSART_RxDefaultInterruptHandler=Ble_RxData_EUSART_ISR;//EUSART_RxDataHandler;
            // if(EUSART_RxDefaultInterruptHandler){
                // EUSART_RxDefaultInterruptHandler();
            // }
-          
-        Bluetooth_RunCmd();
-      
-         CheckRun();
-         FAN_Run();
+           
+          if(run_t.gBle_Mode==1){
+            Bluetooth_RunCmd();
+            run_t.gBle_Mode=0;
+          } 
+          CheckRun();
+          FAN_Run();
               
               
         }

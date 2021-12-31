@@ -302,9 +302,8 @@ void EUSART_Receive_ISR(void)
 
 void EUSART_RxDataHandler(void){
     // use this default receive interrupt handler code
-  //  PIE3bits.RCIE = 0;
- //   eusartRxCount--;
-    
+     
+     PIE3bits.RCIE = 0;
     eusartRxBuffer[eusartRxHead++] = RC1REG;
     if(sizeof(eusartRxBuffer) <= eusartRxHead)
     {
@@ -321,21 +320,10 @@ void EUSART_RxDataHandler(void){
                  eusartRxCount=0;
              }
 		     break;
+           
             case 2:
-		       if(eusartRxBuffer[1]=='X'){
-	              
-              }
-               else{
-                 eusartRxHead=0;
-                 eusartRxCount=0;
-               }
-	       
-		
-             break;
-        /*****/
-            case 3:
     
-            if(eusartRxBuffer[2]=='S'){
+            if(eusartRxBuffer[1]=='S'){
                 
             }
              else{
@@ -343,30 +331,30 @@ void EUSART_RxDataHandler(void){
                  eusartRxCount=0;
                }
                 
+        
+            break;
+            case 3:
+            if(eusartRxBuffer[2]=='P'){
+                
+            }
+             else{
+                 eusartRxHead=0;
+                 eusartRxCount=0;
+               }
         
             break;
             case 4:
-            if(eusartRxBuffer[3]=='P'){
+            if(eusartRxBuffer[3]=='O'){
                 
             }
              else{
                  eusartRxHead=0;
                  eusartRxCount=0;
                }
-        
+                
             break;
             case 5:
-            if(eusartRxBuffer[4]=='O'){
-                
-            }
-             else{
-                 eusartRxHead=0;
-                 eusartRxCount=0;
-               }
-                
-            break;
-            case 6:
-             if(eusartRxBuffer[5]=='R'){
+             if(eusartRxBuffer[4]=='R'){
                  
             }
             else{
@@ -377,8 +365,8 @@ void EUSART_RxDataHandler(void){
         
              break;
              
-            case 7:
-             if(eusartRxBuffer[6]=='T'){
+            case 6:
+             if(eusartRxBuffer[5]=='T'){
                  
             }
              else{
@@ -387,16 +375,25 @@ void EUSART_RxDataHandler(void){
                }
         
             break;
-            case 8:
-            
-                ble_t.bleInputCmd[0]=eusartRxBuffer[7];
+            case 7:
+                if(eusartRxBuffer[6]=='B'||eusartRxBuffer[6]=='L'||eusartRxBuffer[6]=='F'){
+                   ble_t.bleInputCmd[0]=eusartRxBuffer[6];
+                }
+                else{
+                  eusartRxHead=0;
+                  eusartRxCount=0;
+                }
            
 			
             break;
-            case 9:
+            case 8:
 
-		ble_t.bleInputCmd[1]=eusartRxBuffer[8];
-               
+		         ble_t.bleInputCmd[1]=eusartRxBuffer[7];
+                
+                 eusartRxCount=0;
+                 eusartRxHead=0;
+                 run_t.gBle_Mode=1;
+        
              
             break;
             
@@ -405,13 +402,10 @@ void EUSART_RxDataHandler(void){
                eusartRxHead=0;
             break;
      
-		if(eusartRxCount==9){
-            eusartRxCount=0;
-             run_t.gBle_Mode=1;
-        }
+		
         
     }
-  //  PIE3bits.RCIE = 1;
+    PIE3bits.RCIE = 1;
 }
 
 void EUSART_DefaultFramingErrorHandler(void){}

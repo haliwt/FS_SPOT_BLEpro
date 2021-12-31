@@ -23,9 +23,12 @@ typedef struct{
     uint8_t bleSetBaud;
     uint8_t bleSetName;
     uint8_t bleLinked;
-    uint8_t gKeyItem;  //key input whiche item name
+    uint8_t gKeyItem;  //key input whiche item name laser or lamp
     uint8_t eusartTx_Baud_flag;
     uint8_t eusartTx_Baud_n;
+    uint8_t gReadEEPROM_flag;
+    uint8_t gEEPROM_start;
+    
 
     uint16_t gColorPwm;
  

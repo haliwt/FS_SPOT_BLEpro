@@ -67,6 +67,7 @@
 */
 
 #define EUSART_DataReady  (EUSART_is_rx_ready())
+#define EUSART_RX_DATAMAX    8
 
 /**
   Section: Data Type Definitions
@@ -75,7 +76,7 @@ volatile uint8_t eusartRxHead = 0;
 volatile uint8_t eusartRxTail = 0;
 volatile uint8_t eusartRxCount;
 
-volatile uint8_t eusartRxBuffer[9];
+volatile uint8_t eusartRxBuffer[EUSART_RX_DATAMAX];
         
         
 typedef union {

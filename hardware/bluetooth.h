@@ -39,6 +39,6 @@ void EUSART_BleCommandTxReset(void);
 void EUSART_BleCommandTxOpenSetBaud(void);
 void Ble_RxData_EUSART_ISR(void);
 
-void EUSART_BleResponseEvent(void);
 
+void EUSART_BleResponseEvent(uint8_t lampNum);
 #endif

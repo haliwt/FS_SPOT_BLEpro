@@ -57,7 +57,7 @@ static void FAN_ON(void);
 	           run_t.gPowerOn =0;
                run_t.gRunOrder= noLamp;
                run_t.gTurnOffLamp=0;
-                run_t.gKeyItem = 0;
+               run_t.gKeyItem = 0;
                
 	       }
             
@@ -241,7 +241,7 @@ static void FAN_ON(void);
             
             if(run_t.gBleItem==1){
                WhichOneLed_ON(0);//Power On 
-               EUSART_BleResponseEvent();
+               EUSART_BleResponseEvent(0x31);
             }
             else{
                 WhichOneLed_ON(2);
@@ -269,7 +269,7 @@ static void FAN_ON(void);
               
               if(run_t.gBleItem ==1){
                  WhichOneLed_ON(0);//Power On 
-                 EUSART_BleResponseEvent();
+                 EUSART_BleResponseEvent(0x32);
                  
               }
               else {
@@ -297,9 +297,11 @@ static void FAN_ON(void);
               }
               if(run_t.gBleItem==1){
                   WhichOneLed_ON(0);//Power On 
+                  EUSART_BleResponseEvent(0x33);
               }
               else{
                   WhichOneLed_ON(1);
+                 
               }
              
             Laser_ON();
