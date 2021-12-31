@@ -76,11 +76,14 @@ void main(void)
   
     while (1)
     {
+        
+       
+        
         if(run_t.gEEPROM_start==0){
           run_t.gReadEEPROM_flag=DATAEE_ReadByte(0x10);
           if(run_t.gReadEEPROM_flag==0x0A){
               run_t.gEEPROM_start++;
-            
+              EUSART_Initialize_9600();
           }
           else{
             if(run_t.eusartTx_flag<2){
@@ -93,13 +96,27 @@ void main(void)
                 DELAY_milliseconds(200); 
                 if(n>10){
                   run_t.eusartTx_flag=3;
-                  DATAEE_WriteByte(0x10,0x0A);
                 }
                 }
             }
+           if(run_t.eusartTx_flag==3){
+             BLE_MODE_RC2_SetLow();
+            EUSART_BleCommandTxBaud();
+           if(run_t.eusartTx_Baud_flag==1){
+                m++;
+             run_t.eusartTx_Baud_n=0;
+             run_t.eusartTx_Baud_flag=0;
+             DELAY_milliseconds(200);
+             if(m>10){
+                 run_t.eusartTx_flag=4;
+                 DATAEE_WriteByte(0x10,0x0A);
+                 EUSART_Initialize_9600();
+             }
+            }
           }
         }
-        if( run_t.eusartTx_flag==3||run_t.gEEPROM_start==1){
+        }
+        if( run_t.eusartTx_flag==4||run_t.gEEPROM_start==1){
             BLE_MODE_RC2_SetHigh();
             KeyValue = KEY_Scan();
             CheckMode(KeyValue);

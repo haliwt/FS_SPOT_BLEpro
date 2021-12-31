@@ -498,9 +498,9 @@ void EUSART_BleCommandTxData_Name(uint8_t index)
     outputBuf[19]='p';
     outputBuf[20]='e';
     outputBuf[21]=' ';
-    outputBuf[22]='H';//'C';
-    outputBuf[23]='A';//'S';
-    outputBuf[24]='L';//'I';
+    outputBuf[22]='C';
+    outputBuf[23]='S';
+    outputBuf[24]='I';
 //	outputBuf[3]=index+0x30;	// change to ascii number for decimal number 0~9
    if(run_t.eusartTx_flag ==0){
    	   PIE3bits.TXIE=0;
