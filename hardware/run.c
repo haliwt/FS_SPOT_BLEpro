@@ -10,13 +10,15 @@
 #define NORMAL_LEVEL_PWM_STEP	8
 #define NORMAL_LEVEL_PWM_MAX	159 //
 
+#define PWM_WHITE_32_MAX       151 //95%
+
 
 static uint16_t level_32;
 static uint16_t level_8;
 
 
 static void setColorWhite_32(uint16_t val);	// green brightness'
-
+static void setColorWhite_8(uint16_t val);
 static void FAN_ON(void);
 /***************************************************************************
 	*
@@ -337,8 +339,8 @@ static void FAN_ON(void);
                   WhichOneLed_ON(4);
              }
              run_t.gFAN_flag=0;//FAN_OFF_FUN();
-              IO_POWER_RB7_SetHigh();
-              DELAY_milliseconds(100);
+              IO_POWER_RB7_SetLow();
+              DELAY_milliseconds(10);
              // DELAY_microseconds(5000);
               ADJ_LampBrightnessADD();
        
@@ -406,16 +408,16 @@ void ADJ_LampBrightnessADD(void)
 			if(level_32>NORMAL_LEVEL_MAX) level_32=NORMAL_LEVEL_MAX; //20
         //    IO_POWER_RB7_SetLow();
        //     DELAY_microseconds(5000);
-            IO_POWER_RB7_SetHigh();
-            DELAY_milliseconds(50);
+           // IO_POWER_RB7_SetHigh();
+           // DELAY_milliseconds(50);
            // DELAY_microseconds(5000);
              setColorWhite_32(level_32);	// green brightness
               ColorWhite_32_ON();
             IO_POWER_RB7_SetLow();
-            DELAY_microseconds(100);
+            DELAY_microseconds(5);
              IO_POWER_RB7_SetHigh();
-           // DELAY_microseconds(5000);
-              DELAY_milliseconds(50);
+            DELAY_microseconds(5);
+            //  DELAY_milliseconds(50);
                run_t.gFAN_timers=1; //Fan timer start 
                run_t.gFAN_flag=1;
              
@@ -428,16 +430,16 @@ void ADJ_LampBrightnessADD(void)
             level_8+=NORMAL_LEVEL_STEP; //2
 			if(level_8>NORMAL_LEVEL_MAX) level_8=NORMAL_LEVEL_MAX; //20
           
-            IO_POWER_RB7_SetHigh();
+            //IO_POWER_RB7_SetHigh();
             //DELAY_microseconds(5000);  
-             DELAY_milliseconds(20);
-             setColorWhite_32(level_8);	// green brightness
+            // DELAY_milliseconds(20);
+             setColorWhite_8(level_8);	// green brightness
              ColorWhite_8_ON();
             IO_POWER_RB7_SetLow();
-            DELAY_microseconds(100);
+            DELAY_microseconds(10);
             IO_POWER_RB7_SetHigh();
-           // DELAY_microseconds(5000);
-            DELAY_milliseconds(20);
+            DELAY_microseconds(10);
+            //DELAY_milliseconds(20);
              run_t.gFAN_timers=1; //Fan timer start
              run_t.gFAN_flag=1;
 		 break;
@@ -469,7 +471,7 @@ void ADJ_LampBrightnessSUB(void)
              if(level_8<NORMAL_LEVEL_MIN+NORMAL_LEVEL_STEP)	level_8=NORMAL_LEVEL_MIN;//10
 			 else 	level_8-=NORMAL_LEVEL_STEP;
            
-             setColorWhite_32(level_8);	// green brightness
+             setColorWhite_8(level_8);	// green brightness
              ColorWhite_8_ON();
              run_t.gFAN_timers=1; //Fan timer start
   
@@ -484,11 +486,22 @@ static void setColorWhite_32(uint16_t val)	// green brightness
 	uint16_t pwmValue;
 
 	if(val>NORMAL_LEVEL_MAX) val=NORMAL_LEVEL_MAX;
-	pwmValue=(val)*NORMAL_LEVEL_PWM_STEP -1; //20*8=160
+	pwmValue=(val)*NORMAL_LEVEL_PWM_STEP; //20*8=160
+
+	if(pwmValue>PWM_WHITE_32_MAX) pwmValue=PWM_WHITE_32_MAX;
+	PWM3_LoadDutyValue(pwmValue);
+}
+static void setColorWhite_8(uint16_t val)	// green brightness
+{
+	uint16_t pwmValue;
+
+	if(val>NORMAL_LEVEL_MAX) val=NORMAL_LEVEL_MAX;
+	pwmValue=(val)*NORMAL_LEVEL_PWM_STEP; //20*8=160
 
 	if(pwmValue>NORMAL_LEVEL_PWM_MAX) pwmValue=NORMAL_LEVEL_PWM_MAX;
 	PWM3_LoadDutyValue(pwmValue);
 }
+
 
 void FAN_Run(void)
 {
