@@ -37,7 +37,7 @@ static void FAN_ON(void);
 	     if(!keyValue)
 		  	return ;
 		break;
-#if 1
+
 	   case 0x1: //power On
 	  
 	       
@@ -63,7 +63,7 @@ static void FAN_ON(void);
             
 			    
 	  break;
-#endif 
+
 	   case 0x02: //white 32
            if(run_t.gPowerOn==1){
                 run_t.gBleItem=0;
@@ -76,6 +76,7 @@ static void FAN_ON(void);
                     run_t.gKeyItem = 2; //
                      inputKey_lamp_8=0;
                      inputKey_laser=0;
+                    run_t.gFAN_flag=0;
                       
 	        
                 }
@@ -106,6 +107,7 @@ static void FAN_ON(void);
                       run_t.gKeyItem = 4;
                      inputKey_lamp_32=0;
                       inputKey_laser=0;
+                    run_t.gFAN_flag=0;
                      
 	                
                 }
@@ -132,6 +134,7 @@ static void FAN_ON(void);
                       run_t.gKeyItem = 8;
                      inputKey_lamp_32=0;
                      inputKey_lamp_8=0;
+                    run_t.gFAN_flag=0;
                      
 	                
                 }
@@ -151,6 +154,7 @@ static void FAN_ON(void);
             if(run_t.gTurnOffLamp==1){
                 run_t.gBleItem=0;
                  run_t.gKeyItem = 0x10;
+                  run_t.gFAN_flag=0;
                 run_t.gRunOrder= brightness_sub;//run_t.gRunOrder= brightness_add;
            
             }
@@ -163,6 +167,7 @@ static void FAN_ON(void);
              if(run_t.gTurnOffLamp==1) {
                run_t.gBleItem=0;
                 run_t.gKeyItem = 0x20;
+                 run_t.gFAN_flag=0;
                run_t.gRunOrder= brightness_add;
               
              }
@@ -230,6 +235,7 @@ static void FAN_ON(void);
         break;
         
          case white_32:
+            run_t.gFAN_flag =0;
             if(run_t.gPowerOn==1){
                 LED6_Power_ON();
                 
@@ -253,13 +259,16 @@ static void FAN_ON(void);
 
              WhichOneColorLamp_ON(1);
              run_t.gADJ_brightness = 0x01; //color white 32 
-              __delay_ms(1); 
-             run_t.gFAN_flag=1;//FAN_ON_FUN();
+            
               run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
+             run_t.gFAN_timers=1; //Fan timer start
+             run_t.gFAN_flag=1;
+                    
              break;
              
          case white_8:
+              run_t.gFAN_flag =0;
               if(run_t.gPowerOn==1){
                 LED6_Power_ON();
               }
@@ -282,10 +291,11 @@ static void FAN_ON(void);
               
               WhichOneColorLamp_ON(2);
               run_t.gADJ_brightness = 0x02; //color white 8
-               __delay_ms(1); 
-              run_t.gFAN_flag=1;//FAN_ON_FUN();
+             
               run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
+              run_t.gFAN_timers=1; //Fan timer start
+               run_t.gFAN_flag=1;
              break;
              
          case laser :
@@ -305,14 +315,14 @@ static void FAN_ON(void);
               }
              
             Laser_ON();
-              __delay_ms(1); 
-             run_t.gFAN_flag=1;//FAN_ON_FUN();
              run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
              run_t.gADJ_brightness = 0;
+              run_t.gFAN_timers=1; //Fan timer start
              break;
              
          case brightness_add:
+               run_t.gFAN_flag =0;
                 if(run_t.gPowerOn==1){
                 LED6_Power_ON();
               }
@@ -327,15 +337,19 @@ static void FAN_ON(void);
                   WhichOneLed_ON(4);
              }
              run_t.gFAN_flag=0;//FAN_OFF_FUN();
-             
+              IO_POWER_RB7_SetHigh();
+              DELAY_milliseconds(100);
+             // DELAY_microseconds(5000);
               ADJ_LampBrightnessADD();
-            //    __delay_ms(1); 
-             run_t.gFAN_flag=1;//FAN_ON_FUN();
+       
              run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
+              run_t.gFAN_timers=1; //Fan timer start
+               run_t.gFAN_flag=1;
              break;
              
          case brightness_sub:
+            run_t.gFAN_flag =0;
              if(run_t.gPowerOn==1){
                 LED6_Power_ON();
               }
@@ -350,14 +364,13 @@ static void FAN_ON(void);
                  WhichOneLed_ON(5);
                
              }
-              run_t.gFAN_flag=0;//FAN_OFF_FUN();
             // run_t.gRunOrder= 0xAF; //
              ADJ_LampBrightnessSUB();
-              //  __delay_ms(1); 
-             run_t.gFAN_flag=1;//FAN_ON_FUN();
+       
              run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
-             
+              run_t.gFAN_timers=1; //Fan timer start
+              run_t.gFAN_flag=1;
              break;
              
    
@@ -386,29 +399,47 @@ void ADJ_LampBrightnessADD(void)
 	  switch( run_t.gADJ_brightness ){
 
 	     case 0x01://Color -white 32 
-
+                 run_t.gFAN_flag =0;
                 ColorWhite_8_OFF();
                
             level_32+=NORMAL_LEVEL_STEP; //2
 			if(level_32>NORMAL_LEVEL_MAX) level_32=NORMAL_LEVEL_MAX; //20
-                 
+        //    IO_POWER_RB7_SetLow();
+       //     DELAY_microseconds(5000);
+            IO_POWER_RB7_SetHigh();
+            DELAY_milliseconds(50);
+           // DELAY_microseconds(5000);
              setColorWhite_32(level_32);	// green brightness
               ColorWhite_32_ON();
-               
-             
+            IO_POWER_RB7_SetLow();
+            DELAY_microseconds(100);
+             IO_POWER_RB7_SetHigh();
+           // DELAY_microseconds(5000);
+              DELAY_milliseconds(50);
+               run_t.gFAN_timers=1; //Fan timer start 
+               run_t.gFAN_flag=1;
              
 	     break;
 
 		 case 0x02: //Color white 8
-		 		 ColorWhite_32_OFF();
+              run_t.gFAN_flag =0;
+		 	  ColorWhite_32_OFF();
                
             level_8+=NORMAL_LEVEL_STEP; //2
 			if(level_8>NORMAL_LEVEL_MAX) level_8=NORMAL_LEVEL_MAX; //20
-                 
+          
+            IO_POWER_RB7_SetHigh();
+            //DELAY_microseconds(5000);  
+             DELAY_milliseconds(20);
              setColorWhite_32(level_8);	// green brightness
              ColorWhite_8_ON();
-         
-
+            IO_POWER_RB7_SetLow();
+            DELAY_microseconds(100);
+            IO_POWER_RB7_SetHigh();
+           // DELAY_microseconds(5000);
+            DELAY_milliseconds(20);
+             run_t.gFAN_timers=1; //Fan timer start
+             run_t.gFAN_flag=1;
 		 break;
 
 	}
@@ -421,25 +452,28 @@ void ADJ_LampBrightnessSUB(void)
      switch(run_t.gADJ_brightness ){
 
 	     case 0x01://Color -white 32 
+           run_t.gFAN_flag =0;
              ColorWhite_8_OFF();
              if(level_32<NORMAL_LEVEL_MIN+NORMAL_LEVEL_STEP)	level_32=NORMAL_LEVEL_MIN;//10
 			 else 	level_32-=NORMAL_LEVEL_STEP;
            
              setColorWhite_32(level_32);	// green brightness
              ColorWhite_32_ON();
-    
+              run_t.gFAN_timers=1; //Fan timer start
+                 run_t.gFAN_flag=1;
            break;
            
          case 0x02:
+             run_t.gFAN_flag =0;
               ColorWhite_32_OFF();
              if(level_8<NORMAL_LEVEL_MIN+NORMAL_LEVEL_STEP)	level_8=NORMAL_LEVEL_MIN;//10
 			 else 	level_8-=NORMAL_LEVEL_STEP;
            
              setColorWhite_32(level_8);	// green brightness
              ColorWhite_8_ON();
-     
+             run_t.gFAN_timers=1; //Fan timer start
   
-             
+              run_t.gFAN_flag=1;
              break;
 
      }
@@ -459,7 +493,13 @@ static void setColorWhite_32(uint16_t val)	// green brightness
 void FAN_Run(void)
 {
     if(run_t.gFAN_flag==1){
+       
+       
+       FAN_OFF();
+       DELAY_milliseconds(1);
        FAN_ON();
+       DELAY_milliseconds(1);
+       
     }
     else {
        FAN_OFF();

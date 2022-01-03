@@ -28,6 +28,7 @@ typedef struct{
     uint8_t eusartTx_Baud_n;
     uint8_t gReadEEPROM_flag;
     uint8_t gEEPROM_start;
+    uint8_t gFAN_timers;
     
 
     uint16_t gColorPwm;

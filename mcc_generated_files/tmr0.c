@@ -159,19 +159,31 @@ void TMR0_DefaultInterruptHandler(void){
 *********************************************************/
 static void TMR0_Timers(void)
 {
-    static uint16_t tmp,tmp_1s;
+    static uint16_t tmp,tmp_1s,tmp1;
   
     if( run_t.gTim0_30s==1){
         tmp++;
         if(tmp>249){
             tmp_1s++;
             tmp=0;
+            
         }
         if(tmp_1s==30){
             tmp_1s=0;
             run_t.gTimer_flag =1;
         
         }
+    }
+    if(run_t.gFAN_timers==1){
+        tmp1++;
+        if(tmp1>249){
+            
+            tmp1=0;
+            run_t.gFAN_flag =1;
+            
+        }
+        
+        
     }
     
     
