@@ -77,17 +77,17 @@ void main(void)
     while (1)
     {
         
-         IO_POWER_RB7_SetHigh() ;
+      
         run_t.bleLinked = BlueTooth_CheckLink();
         if(run_t.gEEPROM_start==0){
-          IO_POWER_RB7_SetLow();
+           IO_POWER_RB7_SetLow() ;
           run_t.gReadEEPROM_flag=DATAEE_ReadByte(0x10);
           if(run_t.gReadEEPROM_flag==0x0A){
               run_t.gEEPROM_start++;
-              EUSART_Initialize_9600();
+             // EUSART_Initialize_9600();
           }
           else{
-            IO_POWER_RB7_SetLow();
+           
             if(run_t.eusartTx_flag<2){
                 BLE_MODE_RC2_SetLow();
                 EUSART_BleCommandTxData_Name(0);
@@ -112,7 +112,8 @@ void main(void)
              if(m>10){
                  run_t.eusartTx_flag=4;
                  DATAEE_WriteByte(0x10,0x0A);
-                 EUSART_Initialize_9600();
+                 run_t.gEEPROM_start++;
+                // EUSART_Initialize_9600();
              }
             }
           }
@@ -120,7 +121,7 @@ void main(void)
         }
         if( run_t.eusartTx_flag==4||run_t.gEEPROM_start==1){
             BLE_MODE_RC2_SetHigh();
-            
+            IO_POWER_RB7_SetLow() ;
           KeyValue = KEY_Scan();
           EUSART_SetRxInterruptHandler(EUSART_RxDataHandler);
           if(KeyValue !=0){

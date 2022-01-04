@@ -168,23 +168,24 @@ static void TMR0_Timers(void)
             tmp=0;
             
         }
-        if(tmp_1s==30){
+        if(tmp_1s>29){
             tmp_1s=0;
             run_t.gTimer_flag =1;
         
         }
     }
-    if(run_t.gFAN_timers==1){
+    if(run_t.gFAN_timers==1){//100ms
         tmp1++;
-        if(tmp1>249){
+        if(tmp1>24){
             
             tmp1=0;
-            run_t.gFAN_flag =1;
+            run_t.gFAN_numbers++;
             
         }
         
         
     }
+    
     
     
 

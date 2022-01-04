@@ -29,7 +29,7 @@ typedef struct{
     uint8_t gReadEEPROM_flag;
     uint8_t gEEPROM_start;
     uint8_t gFAN_timers;
-    
+    uint8_t gFAN_numbers;
 
     uint16_t gColorPwm;
  
