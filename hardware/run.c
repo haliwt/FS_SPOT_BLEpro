@@ -416,12 +416,11 @@ void ADJ_LampBrightnessADD(void)
                  ColorWhite_32_ON();
                  DELAY_microseconds(500);
              }
-             else{  
-                level_32+=NORMAL_LEVEL_STEP; //10
-                if(level_32>NORMAL_LEVEL_MAX) level_32=NORMAL_LEVEL_MAX; //20
-                setColorWhite_32(level_32);	// green brightness
-                ColorWhite_32_ON();
-             }
+            level_32+=NORMAL_LEVEL_STEP; //10
+            if(level_32>NORMAL_LEVEL_MAX) level_32=NORMAL_LEVEL_MAX; //20
+            setColorWhite_32(level_32);	// green brightness
+            ColorWhite_32_ON();
+             
            // IO_POWER_RB7_SetLow() ;
              run_t.gSubbrightness_mid++;
             run_t.gFAN_timers=0;
@@ -441,13 +440,12 @@ void ADJ_LampBrightnessADD(void)
                  ColorWhite_8_ON();
                  DELAY_microseconds(500);
                 
-             }else{
-                level_8+=NORMAL_LEVEL_STEP; //2
-                if(level_8>NORMAL_LEVEL_MAX) level_8=NORMAL_LEVEL_MAX; //20
-
-                 setColorWhite_32(level_8);	// green brightness
-                 ColorWhite_8_ON();
              }
+              level_8+=NORMAL_LEVEL_STEP; //2
+              if(level_8>NORMAL_LEVEL_MAX) level_8=NORMAL_LEVEL_MAX; //20
+              setColorWhite_32(level_8);	// green brightness
+              ColorWhite_8_ON();
+             
              run_t.gAddbrightness_mid++;
              run_t.gFAN_flag=1;
               run_t.gFAN_timers=0; //Fan timer start
