@@ -19,11 +19,8 @@ typedef struct _BLE{
 
 BLE_T ble_t;
 
-volatile uint8_t BleSetOpenBaud[]={"AT+BAUDABT=1"}; //allow set baud rate 
+
 volatile uint8_t transOngoingFlag=0;
-
-
-
 
 void BlueTooth_Init(void);
 void BlueTooth_SetupAT_Function(void);
@@ -33,12 +30,13 @@ void Bluetooth_RunCmd(void);
 
 void Bluetooth_RunCmd(void);
 
-void EUSART_BleCommandTxData_Name(uint8_t index);
-void EUSART_BleCommandTxBaud(void);
+void EUSART_BleCommandTxData_Name(void);
+void EUSART_BleCommandTxBaud(uint8_t value);
 void EUSART_BleCommandTxReset(void);
 void EUSART_BleCommandTxOpenSetBaud(void);
 void Ble_RxData_EUSART_ISR(void);
 
-
 void EUSART_BleResponseEvent(uint8_t lampNum);
+void BLUETOOTH_MainRun(void);
+
 #endif

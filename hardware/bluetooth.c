@@ -470,7 +470,7 @@ void Bluetooth_RunCmd(void)
  * Return Ref:
  * 
  *****************************************************************************/
-void EUSART_BleCommandTxData_Name(uint8_t index)
+void EUSART_BleCommandTxData_Name(void)
 {
     
    //AT+SPPNAME=ForenScope CSI
@@ -523,7 +523,7 @@ void EUSART_BleCommandTxData_Name(uint8_t index)
  * Return Ref:NO
  * 
  *****************************************************************************/
-void EUSART_BleCommandTxBaud(void)
+void EUSART_BleCommandTxBaud(uint8_t baudrate)
 {
    //AT+BAUD=1
     
@@ -535,7 +535,7 @@ void EUSART_BleCommandTxBaud(void)
      outputBaudBuf[5]='U';
      outputBaudBuf[6]='D';
      outputBaudBuf[7]='=';
-     outputBaudBuf[8]='8'; //'1'-9600bit ;'8'-115200bit
+     outputBaudBuf[8]=baudrate; //'1'-9600bit ;'8'-115200bit
    if(run_t.eusartTx_Baud_flag ==0){
    	   PIE3bits.TXIE=0;
       if(transOngoingFlag==0){
@@ -631,4 +631,58 @@ void EUSART_BleResponseEvent(uint8_t lampNum)
 	    PIE3bits.TXIE=1;
    	} 
 
+}
+/******************************************************************************
+ * 
+ *Function Name: void BLUETOOTH_MainRun(void)
+ * Function:
+ * Input Ref:NO
+ * Return Ref:NO
+ * 
+ *****************************************************************************/
+void BLUETOOTH_MainRun(void)
+{
+     static uint8_t n,m;
+     if(run_t.gEEPROM_start==0){
+           IO_POWER_RB7_SetLow();
+           BLE_MODE_RC2_SetLow();
+           run_t.gReadEEPROM_flag=DATAEE_ReadByte(0x10);
+          if(run_t.gReadEEPROM_flag==0x0A){
+              run_t.gEEPROM_start++;
+              EUSART_Initialize_9600();
+          }
+          else{ 
+                if(run_t.eusartTx_flag<2){
+                    BLE_MODE_RC2_SetLow();
+                    EUSART_BleCommandTxData_Name();
+                    if(run_t.eusartTx_flag==1){
+                        n++;
+                        run_t.eusartTx_Num=0;
+                        run_t.eusartTx_flag=0;
+                        DELAY_milliseconds(200); 
+                        if(n>5){
+                            run_t.eusartTx_flag=3;
+                        }
+                    }
+                }
+                if(run_t.eusartTx_flag==3){
+                    BLE_MODE_RC2_SetLow();
+                    EUSART_BleCommandTxBaud(0x31);
+                    if(run_t.eusartTx_Baud_flag==1){
+                        m++;
+                    EUSART_Initialize_9600();
+                    run_t.eusartTx_Baud_n=0;
+                    run_t.eusartTx_Baud_flag=0;
+                    DELAY_milliseconds(200);
+                    if(m>5){
+                        run_t.eusartTx_flag=4;
+                        DATAEE_WriteByte(0x10,0x0A);
+                        run_t.gEEPROM_start++;
+                        //EUSART_Initialize_9600();
+                        }
+                    }
+                }
+            }
+        }
+    
 }

@@ -549,3 +549,29 @@ void FAN_OFF(void)
   //FAN_RC3_SetHigh();
     FAN_RC3_SetLow();
 }
+
+void RunMain(void)
+{
+    uint8_t  KeyValue;  
+    if( run_t.eusartTx_flag==4||run_t.gEEPROM_start==1){
+           // run_t.bleLinked = BlueTooth_CheckLink();
+            BLE_MODE_RC2_SetHigh();
+            
+          KeyValue = KEY_Scan();
+          EUSART_SetRxInterruptHandler(EUSART_RxDataHandler);
+          if(KeyValue !=0){
+            CheckMode(KeyValue);
+          }
+          else if(run_t.gBle_Mode==1){
+             Bluetooth_RunCmd();
+            run_t.gBle_Mode=0;
+          } 
+          CheckRun();
+          FAN_Run();
+              
+              
+        }
+    
+    
+    
+}
