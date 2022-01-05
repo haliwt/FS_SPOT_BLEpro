@@ -344,16 +344,14 @@ static void FAN_ON(void);
              else{
                   WhichOneLed_ON(4);
              }
-             run_t.gFAN_flag=0;//FAN_OFF_FUN();
+             run_t.gAddbrightness_mid++;
+             run_t.gSubbrightness_mid++;
              ADJ_LampBrightnessADD();
          
        
              run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
              
-            
-             run_t.gFAN_timers=0;
-             run_t.gFAN_flag=1;
              break;
              
          case brightness_sub:
@@ -374,11 +372,11 @@ static void FAN_ON(void);
              }
             // run_t.gRunOrder= 0xAF; //
              ADJ_LampBrightnessSUB();
-       
+             run_t.gAddbrightness_mid++;
+             run_t.gSubbrightness_mid++;
              run_t.gTim0_30s=0;//timer 30s flag;
              run_t.gTimer_flag=0;
-              run_t.gFAN_timers=0; //Fan timer start
-             run_t.gFAN_flag=1;
+            
              break;
              
    
@@ -403,21 +401,31 @@ static void FAN_ON(void);
 **************************************************************/
 void ADJ_LampBrightnessADD(void)
 {
-	
+    static uint8_t adjadd=0xff,adjsub=0xff;
 	  switch( run_t.gADJ_brightness ){
 
 	     case 0x01://Color -white 32 
                  run_t.gFAN_flag =0;
             
-               ColorWhite_8_OFF();
-               
-            level_32+=NORMAL_LEVEL_STEP; //10
-			if(level_32>NORMAL_LEVEL_MAX) level_32=NORMAL_LEVEL_MAX; //20
-                 
-            setColorWhite_32(level_32);	// green brightness
-            ColorWhite_32_ON();
-            IO_POWER_RB7_SetLow() ;
-            run_t.gFAN_flag=1;
+             ColorWhite_8_OFF();
+             
+             if(adjadd !=run_t.gAddbrightness_mid ){
+                 adjadd = run_t.gAddbrightness_mid;
+                 run_t.gColorPwm=143;//111;//79; //50
+                 PWM3_LoadDutyValue(run_t.gColorPwm);
+                 ColorWhite_32_ON();
+                 DELAY_microseconds(500);
+             }
+             else{  
+                level_32+=NORMAL_LEVEL_STEP; //10
+                if(level_32>NORMAL_LEVEL_MAX) level_32=NORMAL_LEVEL_MAX; //20
+                setColorWhite_32(level_32);	// green brightness
+                ColorWhite_32_ON();
+             }
+           // IO_POWER_RB7_SetLow() ;
+             run_t.gSubbrightness_mid++;
+            run_t.gFAN_timers=0;
+             run_t.gFAN_flag=1;
              
 	     break;
 
@@ -425,12 +433,22 @@ void ADJ_LampBrightnessADD(void)
               run_t.gFAN_flag =0;
 		 	  ColorWhite_32_OFF();
            //   IO_POWER_RB7_SetHigh();
-                 
-            level_8+=NORMAL_LEVEL_STEP; //2
-			if(level_8>NORMAL_LEVEL_MAX) level_8=NORMAL_LEVEL_MAX; //20
-                 
-             setColorWhite_32(level_8);	// green brightness
-             ColorWhite_8_ON();
+          
+            if(adjsub !=run_t.gSubbrightness_mid ){
+                 adjsub = run_t.gSubbrightness_mid;
+                 run_t.gColorPwm=143;//111;//79; //50
+                 PWM3_LoadDutyValue(run_t.gColorPwm);
+                 ColorWhite_8_ON();
+                 DELAY_microseconds(500);
+                
+             }else{
+                level_8+=NORMAL_LEVEL_STEP; //2
+                if(level_8>NORMAL_LEVEL_MAX) level_8=NORMAL_LEVEL_MAX; //20
+
+                 setColorWhite_32(level_8);	// green brightness
+                 ColorWhite_8_ON();
+             }
+             run_t.gAddbrightness_mid++;
              run_t.gFAN_flag=1;
               run_t.gFAN_timers=0; //Fan timer start
          
@@ -453,6 +471,8 @@ void ADJ_LampBrightnessSUB(void)
            
              setColorWhite_32(level_32);	// green brightness
              ColorWhite_32_ON();
+              run_t.gAddbrightness_mid++;
+             run_t.gSubbrightness_mid++;
               run_t.gFAN_timers=0; //Fan timer start
                  run_t.gFAN_flag=1;
            break;
@@ -465,6 +485,9 @@ void ADJ_LampBrightnessSUB(void)
            
              setColorWhite_8(level_8);	// green brightness
              ColorWhite_8_ON();
+             run_t.gAddbrightness_mid++;
+             run_t.gSubbrightness_mid++;
+             
              run_t.gFAN_timers=0; //Fan timer start
   
               run_t.gFAN_flag=1;

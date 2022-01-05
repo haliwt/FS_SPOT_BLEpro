@@ -77,8 +77,7 @@ void main(void)
     while (1)
     {
         
-      
-        run_t.bleLinked = BlueTooth_CheckLink();
+        
         if(run_t.gEEPROM_start==0){
            IO_POWER_RB7_SetLow() ;
           run_t.gReadEEPROM_flag=DATAEE_ReadByte(0x10);
@@ -120,6 +119,7 @@ void main(void)
         }
         }
         if( run_t.eusartTx_flag==4||run_t.gEEPROM_start==1){
+           // run_t.bleLinked = BlueTooth_CheckLink();
             BLE_MODE_RC2_SetHigh();
             IO_POWER_RB7_SetLow() ;
           KeyValue = KEY_Scan();

@@ -30,7 +30,9 @@ typedef struct{
     uint8_t gEEPROM_start;
     uint8_t gFAN_timers;
     uint8_t gFAN_numbers;
-
+    uint8_t gAddbrightness_mid;
+    uint8_t gSubbrightness_mid;
+    
     uint16_t gColorPwm;
  
 }RUNREF_T;
